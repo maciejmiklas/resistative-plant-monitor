@@ -120,4 +120,5 @@
 		<project id="TwoLCDs.null.105791119" name="TwoLCDs"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
