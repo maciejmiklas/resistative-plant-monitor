@@ -17,7 +17,7 @@ extern "C" {
 void loop();
 void setup();
 int distance();
-void printDist(int dist);
+void clcd(uint8_t row);
 #ifdef __cplusplus
 } // extern "C"
 #endif
