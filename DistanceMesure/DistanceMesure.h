@@ -4,10 +4,10 @@
 // - extern variable definitions
 // In the appropriate section
 
-#ifndef DistanceLCD_H_
-#define DistanceLCD_H_
+#ifndef DistanceMesure_H_
+#define DistanceMesure_H_
 #include "Arduino.h"
-//add your includes for the project DistanceLCD here
+//add your includes for the project DistanceMesure here
 
 
 //end of add your includes here
@@ -17,14 +17,15 @@ extern "C" {
 void loop();
 void setup();
 int distance();
+void printDist(int dist);
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-//add your function definitions for the project DistanceLCD here
+//add your function definitions for the project DistanceMesure here
 
 
 
 
 //Do not add code below this line
-#endif /* DistanceLCD_H_ */
+#endif /* DistanceMesure_H_ */
