@@ -47,16 +47,13 @@ int distance() {
 	int duration = pulseIn(HC_ECHO_PIN, HIGH);
 
 	// print duration in second line on lcd
-	double durms = (double)duration / (double)1000;
+	double durms = (double) duration / (double) 1000;
 	clcd(1);
 	lcd.setCursor(0, 1);
 	lcd.print(durms);
 
 	int distance = duration / 58.5;
 	return distance;
-}
-void loop1() {
-	delay(500);
 }
 
 void loop() {

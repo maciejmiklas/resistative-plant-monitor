@@ -9,21 +9,19 @@
 #include "Arduino.h"
 //add your includes for the project TempSensors here
 
-
 //end of add your includes here
 #ifdef __cplusplus
 extern "C" {
 #endif
 void loop();
 void setup();
+void clcd(uint8_t row);
+float readV(short port);
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
 //add your function definitions for the project TempSensors here
-
-
-
 
 //Do not add code below this line
 #endif /* TempSensors_H_ */
