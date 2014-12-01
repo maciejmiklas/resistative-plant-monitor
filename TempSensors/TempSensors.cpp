@@ -53,8 +53,9 @@ void lm35() {
 	float tmp36Temp = (tmp36Volt - 0.5) * 100.0;
 	clcd(0);
 	lcd.print(tmp36Temp);
-	lcd.print("->");
+	lcd.print("c->");
 	lcd.print(tmp36Volt, 5);
+	lcd.print("v");
 	resetLm35();
 }
 

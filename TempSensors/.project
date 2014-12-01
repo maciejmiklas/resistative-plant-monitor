@@ -28,9 +28,19 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>DallasTemperature</name>
+			<type>2</type>
+			<locationURI>ArduinoLibPath/DallasTemperature</locationURI>
+		</link>
+		<link>
 			<name>LiquidCrystal</name>
 			<type>2</type>
 			<locationURI>ArduinoLibPath/LiquidCrystal</locationURI>
+		</link>
+		<link>
+			<name>OneWire</name>
+			<type>2</type>
+			<locationURI>ArduinoLibPath/OneWire</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
