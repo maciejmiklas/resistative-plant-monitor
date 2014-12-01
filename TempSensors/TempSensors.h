@@ -15,6 +15,8 @@ extern "C" {
 #endif
 void loop();
 void setup();
+void lm35();
+void resetLm35();
 void clcd(uint8_t row);
 float readV(short port);
 #ifdef __cplusplus
