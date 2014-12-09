@@ -19,8 +19,14 @@ void loop() {
 	lcd.print(" %");
 
 	clcd(1);
-	delay(1000);
+	Timer::Time time = tmr.sample();
+	lcd.print(time.hh);
+	lcd.print(":");
+	lcd.print(time.mm);
+	lcd.print(":");
+	lcd.print(time.ss);
 
+	delay(1000);
 	lproc = proc;
 }
 

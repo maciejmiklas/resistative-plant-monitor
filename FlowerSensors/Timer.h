@@ -6,17 +6,15 @@
 class Timer {
 
 public:
+	struct Time {
+		unsigned int hh;
+		unsigned short mm;
+		unsigned short ss;
+	};
+
 	Timer();
-
 	void restart();
-	//Formated now();
+	Time sample();
 };
-
- typedef struct  {
-	char dd[];
-	char tt[];
-	char mm[];
-} Formated;
-
 
 #endif /* TIMER_H_ */
