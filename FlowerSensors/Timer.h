@@ -7,16 +7,16 @@ class Timer {
 
 public:
 	struct Time {
-		unsigned int dd;
+		int dd;
 		char cdd[4];
 
-		unsigned short hh;
+		short hh;
 		char chh[3];
 
-		unsigned short mm;
+		short mm;
 		char cmm[3];
 
-		unsigned short ss;
+		short ss;
 		char css[3];
 	};
 

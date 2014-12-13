@@ -23,7 +23,11 @@ void setup();
 #define HG_IN 0
 
 void clcd(uint8_t row);
-unsigned short rproc();
-void printProc(unsigned short proc, unsigned short maxProc);
+short readProc();
+void printProc(short proc, short maxProc);
+void setupLcdStatic();
+void updateClock();
+short calcProc();
+void sort(short a[], short size);
 
 #endif /* FlowerSensors_H_ */

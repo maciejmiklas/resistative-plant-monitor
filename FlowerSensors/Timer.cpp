@@ -1,5 +1,5 @@
 #include <Timer.h>
-unsigned long time;
+long time;
 
 Timer::Timer() {
 	time = millis();
@@ -18,25 +18,25 @@ Timer::Time Timer::sample(void) {
 	Timer::Time ts;
 
 	// days
-	unsigned short dd = sec / 86400;
+	short dd = sec / 86400;
 	ts.dd = dd;
 	sprintf(ts.cdd, "%03d", dd);
-	unsigned int cs = sec - dd * 86400;
+	int cs = sec - dd * 86400;
 
 	// hours
-	unsigned short hh = cs / 3600;
+	short hh = cs / 3600;
 	cs -= hh * 3600;
 	ts.hh = hh;
 	sprintf(ts.chh, "%02d", hh);
 
 	// minutes
-	unsigned short mm = cs / 60;
+	short mm = cs / 60;
 	cs -= mm * 60;
 	ts.mm = mm;
 	sprintf(ts.cmm, "%02d", mm);
 
 	// seconds
-	unsigned short ss = cs;
+	short ss = cs;
 	ts.ss = ss;
 	sprintf(ts.css, "%02d", ss);
 

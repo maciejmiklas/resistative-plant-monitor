@@ -2,44 +2,125 @@
 
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 Timer tmr;
-unsigned short maxProc = 0;
-unsigned short lastProc = 0;
-short setProcCnt = 0;
+short maxProc = 0;
 boolean blinkMark = true;
+short lastProc = 0;
+#define PROC_PROBES 30
+short procs[PROC_PROBES];
+short readProcCnt = 0;
+
+struct DTime {
+	int dd;
+	short hh;
+	short mm;
+	short ss;
+};
+DTime dTime;
 
 void setup() {
 	lcd.begin(16, 2);
 	lcd.noAutoscroll();
+
+	setupLcdStatic();
 }
 
 void loop() {
-	unsigned short proc = rproc();
-	if (proc > lastProc + 10) {
-		tmr.restart();
-		maxProc = proc;
-	}
-
-	// make sure to record each rise of read from sensor
-	if (proc > maxProc) {
-		maxProc = proc;
-	}
-
-	printProc(proc, maxProc);
-
-	// read #lastProc every 10 seconds to wait enough time for change on the sensors
-	setProcCnt++;
-	if (setProcCnt == 10) {
-		setProcCnt = 0;
+	short proc = calcProc();
+	if (proc != -1 && proc != lastProc) {
+		if (proc > lastProc + 5) {
+			tmr.restart();
+		}
+		if (proc > lastProc) {
+			maxProc = proc;
+		}
 		lastProc = proc;
+		printProc(proc, maxProc);
 	}
 
-	delay(1000);
+	updateClock();
+
+	delay(500);
 }
 
-void printProc(unsigned short proc, unsigned short maxProc) {
+short calcProc() {
+	readProcCnt++;
+	procs[readProcCnt] = readProc();
+	if (readProcCnt != PROC_PROBES - 1) {
+		return -1;
+	}
+
+	sort(procs, PROC_PROBES);
+	readProcCnt = 0;
+	return procs[PROC_PROBES / 2];
+}
+
+void sort(short arr[], short size) {
+	short i, temp, j;
+	for (i = 1; i < size; i++) {
+		temp = arr[i];
+		j = i - 1;
+		while ((temp < arr[j]) && (j >= 0)) {
+			arr[j + 1] = arr[j];
+			j = j - 1;
+		}
+		arr[j + 1] = temp;
+	}
+}
+
+void setupLcdStatic() {
+	// row 0
 	clcd(0);
 	lcd.print("NOW:");
-	char pch[4];
+	lcd.setCursor(6, 0);
+	lcd.print("%  MAX:");
+	lcd.setCursor(15, 0);
+	lcd.print("%");
+
+	// row 1
+	clcd(1);
+	lcd.print("000 --~ 00:00:00");
+}
+
+void updateClock() {
+	Timer::Time time = tmr.sample();
+
+	// dd
+	if (dTime.dd != time.dd) {
+		lcd.setCursor(0, 1);
+		lcd.print(time.cdd);
+		dTime.dd = time.dd;
+	}
+
+	// hh
+	if (dTime.hh != time.hh) {
+		lcd.setCursor(8, 1);
+		lcd.print(time.chh);
+		dTime.hh = time.hh;
+	}
+
+	// mm
+	if (dTime.mm != time.mm) {
+		lcd.setCursor(11, 1);
+		lcd.print(time.cmm);
+		dTime.mm = time.mm;
+	}
+
+	// ss
+	lcd.setCursor(13, 1);
+	lcd.print(blinkMark ? ":" : " ");
+	blinkMark = !blinkMark;
+
+	if (dTime.ss != time.ss) {
+		lcd.setCursor(14, 1);
+		lcd.print(time.css);
+		dTime.ss = time.ss;
+	}
+}
+
+void printProc(short proc, short maxProc) {
+	clcd(0);
+	lcd.print("NOW:");
+	char pch[3];
 	sprintf(pch, "%02d", proc);
 	lcd.print(pch);
 	lcd.print("%");
@@ -48,24 +129,11 @@ void printProc(unsigned short proc, unsigned short maxProc) {
 	sprintf(pch, "%02d", maxProc);
 	lcd.print(pch);
 	lcd.print("%");
-
-	clcd(1);
-	Timer::Time time = tmr.sample();
-	lcd.print(time.cdd);
-	lcd.print(" --~ ");
-	lcd.print(time.chh);
-	lcd.print(":");
-	lcd.print(time.cmm);
-
-	lcd.print(blinkMark ? ":" : " ");
-	blinkMark = !blinkMark;
-
-	lcd.print(time.css);
 }
 
-unsigned short rproc() {
+short readProc() {
 	int read = analogRead(HG_IN);
-	unsigned short proc = (1018 - read) / 7.48;
+	short proc = (1018 - read) / 7.48;
 
 	if (proc < 0) {
 		proc = 0;
