@@ -3,7 +3,6 @@
 
 #include "Arduino.h"
 #include <LiquidCrystal.h>
-#include <Timer.h>
 
 //end of add your includes here
 #ifdef __cplusplus
@@ -17,17 +16,27 @@ void setup();
 
 //add your function definitions for the project FlowerSensors here
 
-// 1023 / 5 = 204.6
-#define VOLT_DIV 204.6f
-
-#define HG_IN 0
-
 void clcd(uint8_t row);
-short readProc();
-void printProc(short proc, short maxProc);
+uint16_t readProc();
+void printProc(uint16_t proc, uint16_t maxProc);
 void setupLcdStatic();
 void updateClock();
-short calcProc();
-void sort(short a[], short size);
+uint16_t calcProc();
+void sort(uint16_t a[], uint16_t size);
+
+struct Time {
+	uint16_t dd;
+	char cdd[4];
+
+	uint16_t hh;
+	char chh[3];
+
+	uint16_t mm;
+	char cmm[3];
+
+	uint16_t ss;
+	char css[3];
+};
+void sample(Time *ts);
 
 #endif /* FlowerSensors_H_ */
