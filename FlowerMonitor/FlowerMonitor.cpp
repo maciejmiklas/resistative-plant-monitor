@@ -1,15 +1,17 @@
 // Do not remove the include below
 #include "FlowerMonitor.h"
 
+#include "Timer.h"
+#include "Lcd.h"
 
-//The setup function is called once at startup of the sketch
-void setup()
-{
-// Add your initialization code here
+void setup() {
+	timer_reset();
+	lcd_init();
+	Serial.begin(115200);
 }
 
-// The loop function is called in an endless loop
-void loop()
-{
-//Add your repeated code here
+void loop() {
+	Time time;
+	timer_sample(&time);
+	delay(1000);
 }
