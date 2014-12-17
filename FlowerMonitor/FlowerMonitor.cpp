@@ -4,6 +4,8 @@
 #include "Timer.h"
 #include "Lcd.h"
 
+Time time;
+
 void setup() {
 	timer_reset();
 	lcd_init();
@@ -11,7 +13,7 @@ void setup() {
 }
 
 void loop() {
-	Time time;
 	timer_sample(&time);
+	lcd_printClock(&time);
 	delay(1000);
 }

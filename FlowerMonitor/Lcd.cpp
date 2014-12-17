@@ -20,6 +20,9 @@ void clcd(uint8_t row) {
 }
 
 void lcd_init() {
+	lcd.begin(16, 2);
+	lcd.noAutoscroll();
+
 	// row 0
 	clcd(0);
 	lcd.print("NOW:");

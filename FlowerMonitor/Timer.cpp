@@ -16,28 +16,25 @@ void timer_sample(Time *ts) {
 	uint32_t sec = milis / TR__MS_SEC;
 
 	// days
-	uint16_t dd = sec / TR__SEC_DD;
-	ts->dd = dd;
-	sprintf(ts->cdd, "%03d", dd);
-	uint16_t cs = sec - dd * TR__SEC_DD;
+	ts->dd = sec / TR__SEC_DD;
+	sprintf(ts->cdd, "%03d", ts->dd);
+	uint32_t cs = sec - ts->dd * TR__SEC_DD;
 
 	Serial.print(">>> cs1:");
 	Serial.print(cs);
 
 	// hours
-	uint16_t hh = cs / TR__SEC_HH;
-	cs -= hh * TR__SEC_HH;
-	ts->hh = hh;
-	sprintf(ts->chh, "%02d", hh);
+	ts->hh = cs / TR__SEC_HH;
+	cs -= ts->hh * TR__SEC_HH;
+	sprintf(ts->chh, "%02d", ts->hh);
 
 	Serial.print(",cs2:");
 	Serial.print(cs);
 
 	// minutes
-	uint16_t mm = cs / TR__SEC_MM;
-	cs -= mm * TR__SEC_MM;
-	ts->mm = mm;
-	sprintf(ts->cmm, "%02d", mm);
+	ts->mm = cs / TR__SEC_MM;
+	cs -= ts->mm * TR__SEC_MM;
+	sprintf(ts->cmm, "%02d", ts->mm);
 
 	Serial.print(",cs3:");
 	Serial.print(cs);
@@ -50,20 +47,15 @@ void timer_sample(Time *ts) {
 	Serial.print(",milis:");
 	Serial.print(milis);
 
-	Serial.print(",sec:");
-	Serial.print(sec);
+	Serial.print(" -> ");
 
-	Serial.print(",dd:");
-	Serial.print(dd);
-
-	Serial.print(",hh:");
-	Serial.print(hh);
-
-	Serial.print(",mm:");
-	Serial.print(mm);
-
-	Serial.print(",ss:");
-	Serial.print(ss);
+	Serial.print(ts->dd);
+	Serial.print(" ");
+	Serial.print(ts->hh);
+	Serial.print(":");
+	Serial.print(ts->mm);
+	Serial.print(":");
+	Serial.print(ts->ss);
 	Serial.println(" <<<");
 }
 
