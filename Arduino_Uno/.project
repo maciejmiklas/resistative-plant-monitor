@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>FlowerSensors</name>
+	<name>Arduino_Uno</name>
 	<comment></comment>
 	<projects>
-		<project>Arduino_BT_w__ATmega328</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -28,9 +27,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>LiquidCrystal</name>
+			<name>arduino</name>
 			<type>2</type>
-			<locationURI>ArduinoLibPath/LiquidCrystal</locationURI>
+			<locationURI>CoreArduinoPath/arduino</locationURI>
+		</link>
+		<link>
+			<name>standard</name>
+			<type>2</type>
+			<locationURI>PinArduinoPath/standard</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

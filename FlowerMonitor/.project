@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Arduino_BT_w__ATmega328</name>
+	<name>FlowerMonitor</name>
 	<comment></comment>
 	<projects>
+		<project>Arduino_Uno</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -25,16 +26,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>it.baeyens.arduinonature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>arduino</name>
-			<type>2</type>
-			<locationURI>CoreArduinoPath/arduino</locationURI>
-		</link>
-		<link>
-			<name>eightanaloginputs</name>
-			<type>2</type>
-			<locationURI>PinArduinoPath/eightanaloginputs</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

@@ -4,10 +4,10 @@
 // - extern variable definitions
 // In the appropriate section
 
-#ifndef NanoTest_H_
-#define NanoTest_H_
+#ifndef FlowerMonitor_H_
+#define FlowerMonitor_H_
 #include "Arduino.h"
-//add your includes for the project NanoTest here
+//add your includes for the project FlowerMonitor here
 
 
 //end of add your includes here
@@ -20,11 +20,10 @@ void setup();
 } // extern "C"
 #endif
 
-//add your function definitions for the project NanoTest here
+//add your function definitions for the project FlowerMonitor here
 
 
-void sing(int s);
-void buzz(int targetPin, long frequency, long length);
+
 
 //Do not add code below this line
-#endif /* NanoTest_H_ */
+#endif /* FlowerMonitor_H_ */

@@ -32,9 +32,9 @@
 									<listOptionValue builtIn="false" value="USB_PID=${ARDUINO_PID_VALUE}"/>
 									<listOptionValue builtIn="false" value="ARDUINO=${ARDUINO_IDE_VERSION}"/>
 								</option>
-								<option id="it.baeyens.avreclipse.compiler.option.incpath.2069645566" name="Include Paths (-I)" superClass="it.baeyens.avreclipse.compiler.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_BT_w__ATmega328/arduino}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_BT_w__ATmega328/eightanaloginputs}&quot;"/>
+								<option id="it.baeyens.avreclipse.compiler.option.incpath.1217196188" name="Include Paths (-I)" superClass="it.baeyens.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_Nano_w__ATmega328/arduino}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_Nano_w__ATmega328/eightanaloginputs}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.avreclipse.compiler.winavr.input.695727881" name="C Source Files" superClass="it.baeyens.avreclipse.compiler.winavr.input"/>
 							</tool>
@@ -51,9 +51,9 @@
 									<listOptionValue builtIn="false" value="USB_VID=${ARDUINO_VID_VALUE}"/>
 									<listOptionValue builtIn="false" value="ARDUINO=${ARDUINO_IDE_VERSION}"/>
 								</option>
-								<option id="it.baeyens.avreclipse.cppcompiler.option.incpath.333280364" name="Include Paths (-I)" superClass="it.baeyens.avreclipse.cppcompiler.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_BT_w__ATmega328/arduino}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_BT_w__ATmega328/eightanaloginputs}&quot;"/>
+								<option id="it.baeyens.avreclipse.cppcompiler.option.incpath.1447963546" name="Include Paths (-I)" superClass="it.baeyens.avreclipse.cppcompiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_Nano_w__ATmega328/arduino}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Arduino_Nano_w__ATmega328/eightanaloginputs}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.avreclipse.cppcompiler.input.2064355297" superClass="it.baeyens.avreclipse.cppcompiler.input"/>
 							</tool>
