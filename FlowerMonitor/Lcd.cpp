@@ -1,5 +1,4 @@
 #include "Lcd.h"
-#include <LiquidCrystal.h>
 
 typedef struct {
 	uint16_t dd;
@@ -25,15 +24,23 @@ void lcd_init() {
 
 	// row 0
 	clcd(0);
-	lcd.print("NOW:");
-	lcd.setCursor(6, 0);
-	lcd.print("%  MAX:");
-	lcd.setCursor(15, 0);
-	lcd.print("%");
+	lcd.print("NOW:00%  MAX:00%");
 
 	// row 1
 	clcd(1);
 	lcd.print("000 --~ 00:00:00");
+}
+
+void lcd_printMoisture(Moisture *moisture) {
+
+	lcd.setCursor(4, 0);
+	char pch[3];
+	sprintf(pch, "%02d", moisture->proc);
+	lcd.print(pch);
+
+	lcd.setCursor(13, 0);
+	sprintf(pch, "%02d", moisture->maxProc);
+	lcd.print(pch);
 }
 
 void lcd_printClock(Time *time) {

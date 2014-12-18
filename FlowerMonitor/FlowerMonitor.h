@@ -1,16 +1,12 @@
-// Only modify this file to include
-// - function definitions (prototypes)
-// - include files
-// - extern variable definitions
-// In the appropriate section
-
 #ifndef FlowerMonitor_H_
 #define FlowerMonitor_H_
+
 #include <Arduino.h>
-//add your includes for the project FlowerMonitor here
+#include "Timer.h"
+#include "Lcd.h"
+#include "Hygrometer.h"
+#include "Domain.h"
 
-
-//end of add your includes here
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,10 +16,4 @@ void setup();
 } // extern "C"
 #endif
 
-//add your function definitions for the project FlowerMonitor here
-
-
-
-
-//Do not add code below this line
 #endif /* FlowerMonitor_H_ */

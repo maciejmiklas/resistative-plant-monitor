@@ -1,19 +1,26 @@
-// Do not remove the include below
 #include "FlowerMonitor.h"
 
-#include "Timer.h"
-#include "Lcd.h"
-
 Time time;
+Moisture moisture;
 
 void setup() {
 	timer_reset();
 	lcd_init();
-	Serial.begin(115200);
+	hydro_init(&moisture);
+	//Serial.begin(115200);
 }
 
 void loop() {
+	hydro_update(&moisture);
+	if (moisture.increased) {
+		timer_reset();
+	}
+	if (moisture.changed) {
+		lcd_printMoisture(&moisture);
+	}
+
 	timer_sample(&time);
 	lcd_printClock(&time);
-	delay(1000);
+
+	delay(500);
 }
