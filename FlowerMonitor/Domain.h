@@ -17,11 +17,16 @@ typedef struct {
 	char css[3];
 } Time;
 
+enum {
+	MS_CHANGED = 0x01,
+	MS_INCREASED = 0x02,
+	MS_ALL = 0x7F
+};
+
 typedef struct {
 	uint16_t proc;
 	uint16_t maxProc;
-	boolean changed;
-	boolean increased;
+	byte status;
 } Moisture;
 
 void domain_sort(uint16_t arr[], uint16_t size);

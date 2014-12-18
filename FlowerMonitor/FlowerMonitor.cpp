@@ -7,15 +7,15 @@ void setup() {
 	timer_reset();
 	lcd_init();
 	hydro_init(&moisture);
-	//Serial.begin(115200);
+	Serial.begin(115200);
 }
 
 void loop() {
 	hydro_update(&moisture);
-	if (moisture.increased) {
+	if (moisture.status & MS_CHANGED) {
 		timer_reset();
 	}
-	if (moisture.changed) {
+	if (moisture.status & MS_INCREASED) {
 		lcd_printMoisture(&moisture);
 	}
 
@@ -24,3 +24,5 @@ void loop() {
 
 	delay(500);
 }
+
+

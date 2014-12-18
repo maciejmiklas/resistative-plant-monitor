@@ -34,21 +34,20 @@ uint16_t calcProc() {
 }
 
 void hydro_init(Moisture *moisture) {
-	moisture->changed = true;
-	moisture->increased = false;
+	moisture->status  = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;
 }
 
 void hydro_update(Moisture *moisture) {
-	moisture->changed = false;
-	moisture->increased = false;
+	moisture->status &= ~(MS_CHANGED |MS_INCREASED);
 
 	uint16_t proc = calcProc();
 	if (proc != UPROC && proc != lastProc) {
-		moisture->changed = true;
+		moisture->status |= MS_INCREASED;
+
 		if (proc > lastProc + 5) {
-			moisture->increased = true;
+			moisture->status |= MS_CHANGED;
 		}
 		if (proc > lastProc) {
 			maxProc = proc;
