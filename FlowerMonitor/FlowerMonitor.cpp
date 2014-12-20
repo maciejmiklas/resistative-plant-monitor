@@ -10,12 +10,16 @@ void setup() {
 	Serial.begin(115200);
 }
 
+void loop_() {
+
+}
+
 void loop() {
 	hydro_update(&moisture);
-	if (moisture.status & MS_CHANGED) {
+	if (moisture.status & MS_INCREASED) {
 		timer_reset();
 	}
-	if (moisture.status & MS_INCREASED) {
+	if (moisture.status & MS_CHANGED) {
 		lcd_printMoisture(&moisture);
 	}
 

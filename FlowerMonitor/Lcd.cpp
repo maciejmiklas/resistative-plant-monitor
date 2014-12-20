@@ -32,7 +32,6 @@ void lcd_init() {
 }
 
 void lcd_printMoisture(Moisture *moisture) {
-
 	lcd.setCursor(4, 0);
 	char pch[3];
 	sprintf(pch, "%02d", moisture->proc);
@@ -77,3 +76,8 @@ void lcd_printClock(Time *time) {
 		dTime.ss = time->ss;
 	}
 }
+
+void lcd_bright() {
+	//int phVal = analogRead(PHOTO_SENS_PIN);
+}
+

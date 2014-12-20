@@ -3,8 +3,6 @@
 #define UPROC 9999
 
 uint16_t readProcCnt = 0;
-uint16_t maxProc = 0;
-uint16_t lastProc = 0;
 
 #define PROC_PROBES 30
 uint16_t procs[PROC_PROBES];
@@ -30,31 +28,29 @@ uint16_t calcProc() {
 
 	domain_sort(procs, PROC_PROBES);
 	readProcCnt = 0;
-	return procs[PROC_PROBES / 2];
+	return procs[PROC_PROBES / 2 + 1];
 }
 
 void hydro_init(Moisture *moisture) {
-	moisture->status  = 0 | MS_CHANGED;
+	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;
 }
 
 void hydro_update(Moisture *moisture) {
-	moisture->status &= ~(MS_CHANGED |MS_INCREASED);
+	moisture->status &= ~(MS_CHANGED | MS_INCREASED);
 
 	uint16_t proc = calcProc();
-	if (proc != UPROC && proc != lastProc) {
-		moisture->status |= MS_INCREASED;
+	if (proc != UPROC && proc != moisture->proc) {
 
-		if (proc > lastProc + 5) {
-			moisture->status |= MS_CHANGED;
-		}
-		if (proc > lastProc) {
-			maxProc = proc;
-		}
-		lastProc = proc;
+		moisture->status |= MS_CHANGED;
 
-		moisture->maxProc = maxProc;
+		if (proc > moisture->proc + 5) {
+			moisture->status |= MS_INCREASED;
+		}
+		if (proc > moisture->maxProc) {
+			moisture->maxProc = proc;
+		}
 		moisture->proc = proc;
 	}
 }
