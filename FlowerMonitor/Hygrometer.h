@@ -3,10 +3,18 @@
 
 #include <Arduino.h>
 #include "Domain.h"
+#include "Util.h"
 
-#define HYDRO_READ_PIN 0
+#define MOISTURE_READ_PIN 0
 
-void hydro_update(Moisture *moisture);
-void hydro_init(Moisture *moisture);
+/*
+ * After plant watering the moisture level can jump very high due to the water flowing across sensor.
+ * Max time will be calculated as the lowest value during adoption time. Adoption timer starts
+ * after we recognize significantly increased moisture level. Default is 5 minutes.
+ */
+#define MOISTURE_MAX_ADOPT_MS 300000
+
+void hygro_update(Moisture *moisture);
+void hygro_init(Moisture *moisture);
 
 #endif /* Hygrometer_H_ */

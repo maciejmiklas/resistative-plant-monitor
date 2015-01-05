@@ -11,7 +11,7 @@ uint32_t timeMS;
 //long milis =  345600000 + 1440000 + 17000;// 4d 0h 24m 17s
 //long milis =  446400000 + 1440000 + 17000;// 5d 4h 24m 17s
 void timer_sample(Time *ts) {
-	uint32_t milis = millis() - timeMS;
+	uint32_t milis = util_millis() - timeMS;
 	uint32_t sec = milis / TR__MS_SEC;
 
 	// days
@@ -36,5 +36,5 @@ void timer_sample(Time *ts) {
 }
 
 void timer_reset() {
-	timeMS = millis();
+	timeMS = util_millis();
 }

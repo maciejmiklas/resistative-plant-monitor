@@ -4,9 +4,14 @@
 #include <LiquidCrystal.h>
 #include <Arduino.h>
 #include "Timer.h"
+#include "Util.h"
 
 #define LIGHT_SENS_PIN 1
-#define LIGHT_SESN_INIT 200;
+#define LIGHT_SESN_SENSITIVITY 200
+#define LCD_BACKLIGHT_PIN 9
+#define LCD_BACKLIGHT_INIT 200
+
+#define CLOCK_UPDATE_MS 500
 
 void lcd_init();
 void lcd_printClock(Time *time);

@@ -6,6 +6,7 @@
 #include "Lcd.h"
 #include "Hygrometer.h"
 #include "Domain.h"
+#include "Util.h"
 
 #ifdef __cplusplus
 extern "C" {

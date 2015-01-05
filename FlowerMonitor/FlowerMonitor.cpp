@@ -6,27 +6,25 @@ Moisture moisture;
 void setup() {
 	timer_reset();
 	lcd_init();
-	hydro_init(&moisture);
+	hygro_init(&moisture);
 	Serial.begin(115200);
 }
 
-void loop_() {
-
-}
-
 void loop() {
-	hydro_update(&moisture);
+	util_cycle();
+
+	hygro_update(&moisture);
 	if (moisture.status & MS_INCREASED) {
 		timer_reset();
 	}
 	if (moisture.status & MS_CHANGED) {
 		lcd_printMoisture(&moisture);
 	}
-
 	timer_sample(&time);
 	lcd_printClock(&time);
+	lcd_bright();
 
-	delay(500);
+	delay(100);
 }
 
 

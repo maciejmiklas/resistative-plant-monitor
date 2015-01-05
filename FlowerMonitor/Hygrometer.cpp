@@ -6,9 +6,10 @@ uint16_t readProcCnt = 0;
 
 #define PROC_PROBES 30
 uint16_t procs[PROC_PROBES];
+uint32_t moistureIncreasedMs = 0;
 
 uint16_t readProc() {
-	int read = analogRead(HYDRO_READ_PIN);
+	int read = analogRead(MOISTURE_READ_PIN);
 	uint16_t proc = (1018 - read) / 7.48;
 
 	if (proc < 0) {
@@ -31,13 +32,13 @@ uint16_t calcProc() {
 	return procs[PROC_PROBES / 2 + 1];
 }
 
-void hydro_init(Moisture *moisture) {
+void hygro_init(Moisture *moisture) {
 	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;
 }
 
-void hydro_update(Moisture *moisture) {
+void hygro_update(Moisture *moisture) {
 	moisture->status &= ~(MS_CHANGED | MS_INCREASED);
 
 	uint16_t proc = calcProc();
@@ -47,8 +48,13 @@ void hydro_update(Moisture *moisture) {
 
 		if (proc > moisture->proc + 5) {
 			moisture->status |= MS_INCREASED;
-		}
-		if (proc > moisture->maxProc) {
+			moisture->maxProc = proc;
+			moistureIncreasedMs = util_millis();
+
+		} else if ((util_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
+			moisture->maxProc = proc;
+
+		} else if (proc > moisture->maxProc) {
 			moisture->maxProc = proc;
 		}
 		moisture->proc = proc;

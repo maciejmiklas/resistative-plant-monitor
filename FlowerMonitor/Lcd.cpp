@@ -7,6 +7,9 @@ typedef struct {
 	uint16_t ss;
 } DTime;
 DTime dTime;
+int lightSensorVal = 0;
+
+uint32_t lastUpdate = 0;
 
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
@@ -21,6 +24,8 @@ void clcd(uint8_t row) {
 void lcd_init() {
 	lcd.begin(16, 2);
 	lcd.noAutoscroll();
+	pinMode(LCD_BACKLIGHT_PIN, OUTPUT);
+	analogWrite(LCD_BACKLIGHT_PIN, LCD_BACKLIGHT_INIT);
 
 	// row 0
 	clcd(0);
@@ -29,6 +34,8 @@ void lcd_init() {
 	// row 1
 	clcd(1);
 	lcd.print("000 --~ 00:00:00");
+
+	lastUpdate = util_millis();
 }
 
 void lcd_printMoisture(Moisture *moisture) {
@@ -43,6 +50,10 @@ void lcd_printMoisture(Moisture *moisture) {
 }
 
 void lcd_printClock(Time *time) {
+	if ((util_millis() - lastUpdate) < CLOCK_UPDATE_MS) {
+		return;
+	}
+	lastUpdate = util_millis();
 
 	// dd
 	if (dTime.dd != time->dd) {
@@ -77,7 +88,21 @@ void lcd_printClock(Time *time) {
 	}
 }
 
+/*
+ * Light sensor: 200 - 1000 (bright - dark)
+ * LCD backlight: 200 - 50 (bright, dark)
+ * [LCD backlight] = (1267 - [light sensor]) / 5.33
+ */
 void lcd_bright() {
-	//int phVal = analogRead(PHOTO_SENS_PIN);
+	int lightVal = analogRead(LIGHT_SENS_PIN);
+	if ( abs(lightSensorVal - lightVal) >= LIGHT_SESN_SENSITIVITY) {
+		lightSensorVal = lightVal;
+		int lcdLight = (1267 - lightVal) / 5.33;
+		analogWrite(LCD_BACKLIGHT_PIN, lcdLight);
+
+		Serial.print(lightVal);
+		Serial.print(" - ");
+		Serial.println(lcdLight);
+	}
 }
 

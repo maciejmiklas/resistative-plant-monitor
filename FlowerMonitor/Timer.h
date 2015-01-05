@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <stdio.h>
 #include "Domain.h"
+#include "Util.h"
 
 void timer_sample(Time *ts);
 
