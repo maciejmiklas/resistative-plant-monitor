@@ -50,7 +50,7 @@ void lcd_printMoisture(Moisture *moisture) {
 }
 
 void lcd_printClock(Time *time) {
-	if ((util_millis() - lastUpdate) < CLOCK_UPDATE_MS) {
+	if ((util_millis() - lastUpdate) < LCD_CLOCK_UPDATE_MS) {
 		return;
 	}
 	lastUpdate = util_millis();
@@ -94,15 +94,11 @@ void lcd_printClock(Time *time) {
  * [LCD backlight] = (1267 - [light sensor]) / 5.33
  */
 void lcd_bright() {
-	int lightVal = analogRead(LIGHT_SENS_PIN);
-	if ( abs(lightSensorVal - lightVal) >= LIGHT_SESN_SENSITIVITY) {
+	int lightVal = analogRead(LCD_LIGHT_SENS_PIN);
+	if ( abs(lightSensorVal - lightVal) >= LCD_LIGHT_SESN_SENSITIVITY) {
 		lightSensorVal = lightVal;
 		int lcdLight = (1267 - lightVal) / 5.33;
 		analogWrite(LCD_BACKLIGHT_PIN, lcdLight);
-
-		Serial.print(lightVal);
-		Serial.print(" - ");
-		Serial.println(lcdLight);
 	}
 }
 

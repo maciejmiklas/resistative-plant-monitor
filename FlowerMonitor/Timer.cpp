@@ -37,4 +37,5 @@ void timer_sample(Time *ts) {
 
 void timer_reset() {
 	timeMS = util_millis();
+	Serial.println("timer_reset");
 }

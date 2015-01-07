@@ -4,7 +4,7 @@
 
 uint16_t readProcCnt = 0;
 
-#define PROC_PROBES 30
+#define PROC_PROBES 60
 uint16_t procs[PROC_PROBES];
 uint32_t moistureIncreasedMs = 0;
 
@@ -43,13 +43,14 @@ void hygro_update(Moisture *moisture) {
 
 	uint16_t proc = calcProc();
 	if (proc != UPROC && proc != moisture->proc) {
-
+		Serial.print("MS_CHANGED ");Serial.print(proc);Serial.print(" - ");Serial.print(moisture->proc);
 		moisture->status |= MS_CHANGED;
 
 		if (proc > moisture->proc + 5) {
 			moisture->status |= MS_INCREASED;
 			moisture->maxProc = proc;
 			moistureIncreasedMs = util_millis();
+			Serial.print(" - INCREASED");
 
 		} else if ((util_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
 			moisture->maxProc = proc;
@@ -57,6 +58,7 @@ void hygro_update(Moisture *moisture) {
 		} else if (proc > moisture->maxProc) {
 			moisture->maxProc = proc;
 		}
+		Serial.println("");
 		moisture->proc = proc;
 	}
 }

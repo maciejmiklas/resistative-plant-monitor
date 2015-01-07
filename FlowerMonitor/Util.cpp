@@ -1,9 +1,4 @@
-#include "Timer.h"
-
-#define TR__MS_SEC 1000
-#define TR__SEC_DD 86400
-#define TR__SEC_HH 3600
-#define TR__SEC_MM 60
+#include "Util.h"
 
 uint32_t cycleMilis;
 
