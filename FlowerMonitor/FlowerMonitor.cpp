@@ -4,14 +4,16 @@ Time time;
 Moisture moisture;
 
 void setup() {
+	log_init();
 	timer_reset();
 	lcd_init();
 	hygro_init(&moisture);
-	Serial.begin(115200);
+	sos_reset();
 }
 
 void loop() {
 	util_cycle();
+	log_cycle();
 
 	hygro_update(&moisture);
 	if (moisture.status & MS_INCREASED) {

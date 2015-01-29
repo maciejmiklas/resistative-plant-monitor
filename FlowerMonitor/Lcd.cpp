@@ -22,6 +22,8 @@ void clcd(uint8_t row) {
 }
 
 void lcd_init() {
+	log_ln("Initializing LCD module");
+
 	lcd.begin(16, 2);
 	lcd.noAutoscroll();
 	pinMode(LCD_BACKLIGHT_PIN, OUTPUT);
@@ -54,25 +56,29 @@ void lcd_printClock(Time *time) {
 		return;
 	}
 	lastUpdate = util_millis();
+	char buf[4];
 
 	// dd
 	if (dTime.dd != time->dd) {
 		lcd.setCursor(0, 1);
-		lcd.print(time->cdd);
+		sprintf(buf, "%03d", time->dd);
+		lcd.print(buf);
 		dTime.dd = time->dd;
 	}
 
 	// hh
 	if (dTime.hh != time->hh) {
 		lcd.setCursor(8, 1);
-		lcd.print(time->chh);
+		sprintf(buf, "%02d", time->hh);
+		lcd.print(buf);
 		dTime.hh = time->hh;
 	}
 
 	// mm
 	if (dTime.mm != time->mm) {
 		lcd.setCursor(11, 1);
-		lcd.print(time->cmm);
+		sprintf(buf, "%02d", time->mm);
+		lcd.print(buf);
 		dTime.mm = time->mm;
 	}
 
@@ -83,7 +89,8 @@ void lcd_printClock(Time *time) {
 
 	if (dTime.ss != time->ss) {
 		lcd.setCursor(14, 1);
-		lcd.print(time->css);
+		sprintf(buf, "%02d", time->ss);
+		lcd.print(buf);
 		dTime.ss = time->ss;
 	}
 }
@@ -97,8 +104,19 @@ void lcd_bright() {
 	int lightVal = analogRead(LCD_LIGHT_SENS_PIN);
 	if ( abs(lightSensorVal - lightVal) >= LCD_LIGHT_SESN_SENSITIVITY) {
 		lightSensorVal = lightVal;
-		int lcdLight = (1267 - lightVal) / 5.33;
+		int lcdLight = (1400 - lightVal) / 5.33;
+
+		if (lcdLight > LCD_BACKLIGHT_MAX) {
+			lcdLight = LCD_BACKLIGHT_MAX;
+		} else if (lcdLight < LCD_BACKLIGHT_MIN) {
+			lcdLight = LCD_BACKLIGHT_MIN;
+		}
+
 		analogWrite(LCD_BACKLIGHT_PIN, lcdLight);
+
+		Serial.print(lightVal);
+		Serial.print(" - ");
+		Serial.println(lcdLight);
 	}
 }
 

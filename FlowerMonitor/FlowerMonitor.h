@@ -7,6 +7,8 @@
 #include "Hygrometer.h"
 #include "Domain.h"
 #include "Util.h"
+#include "Sos.h"
+#include "Log.h"
 
 #ifdef __cplusplus
 extern "C" {

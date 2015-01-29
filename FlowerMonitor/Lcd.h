@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Domain.h"
 #include "Util.h"
+#include "Log.h"
 
 void lcd_init();
 void lcd_printClock(Time *time);

@@ -16,26 +16,23 @@ void timer_sample(Time *ts) {
 
 	// days
 	ts->dd = sec / TR__SEC_DD;
-	sprintf(ts->cdd, "%03d", ts->dd);
-	uint32_t cs = sec - ts->dd * TR__SEC_DD;
+	uint32_t tmp = sec - ts->dd * TR__SEC_DD;
 
-	// hours
-	ts->hh = cs / TR__SEC_HH;
-	cs -= ts->hh * TR__SEC_HH;
-	sprintf(ts->chh, "%02d", ts->hh);
+	// hours of a day
+	ts->hh = tmp / TR__SEC_HH;
+	tmp -= ts->hh * TR__SEC_HH;
 
-	// minutes
-	ts->mm = cs / TR__SEC_MM;
-	cs -= ts->mm * TR__SEC_MM;
-	sprintf(ts->cmm, "%02d", ts->mm);
+	// minutes of an hour
+	ts->mm = tmp / TR__SEC_MM;
+	tmp -= ts->mm * TR__SEC_MM;
 
-	// seconds
-	uint16_t ss = cs;
-	ts->ss = ss;
-	sprintf(ts->css, "%02d", ss);
+	// seconds of a minute
+	ts->ss = tmp;
+
+	// millis of a second
+	ts->ml = milis % sec;
 }
 
 void timer_reset() {
 	timeMS = util_millis();
-	Serial.println("timer_reset");
 }

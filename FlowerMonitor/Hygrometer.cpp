@@ -33,6 +33,7 @@ uint16_t calcProc() {
 }
 
 void hygro_init(Moisture *moisture) {
+	log_ln("Initializing hygrometer module");
 	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;
@@ -43,14 +44,11 @@ void hygro_update(Moisture *moisture) {
 
 	uint16_t proc = calcProc();
 	if (proc != UPROC && proc != moisture->proc) {
-		Serial.print("MS_CHANGED ");Serial.print(proc);Serial.print(" - ");Serial.print(moisture->proc);
 		moisture->status |= MS_CHANGED;
-
 		if (proc > moisture->proc + 5) {
 			moisture->status |= MS_INCREASED;
 			moisture->maxProc = proc;
 			moistureIncreasedMs = util_millis();
-			Serial.print(" - INCREASED");
 
 		} else if ((util_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
 			moisture->maxProc = proc;
@@ -58,7 +56,6 @@ void hygro_update(Moisture *moisture) {
 		} else if (proc > moisture->maxProc) {
 			moisture->maxProc = proc;
 		}
-		Serial.println("");
 		moisture->proc = proc;
 	}
 }
