@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include "Domain.h"
-#include "Util.h"
 #include "Log.h"
 
 void hygro_update(Moisture *moisture);

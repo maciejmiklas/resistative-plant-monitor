@@ -3,42 +3,43 @@
 Time time;
 Moisture moisture;
 
+uint32_t wateringMs;
 void setup1() {
+	timer_init();
 	log_init();
-	timer_reset();
 	lcd_init();
 	hygro_init(&moisture);
-	sos_reset();
+	sos_init();
+	wateringMs = timer_millis();
 }
 
 void loop1() {
-	util_cycle();
+	timer_cycle();
 	log_cycle();
 
 	hygro_update(&moisture);
 	if (moisture.status & MS_INCREASED) {
-		timer_reset();
+		ln("Recognized plant watering");
+		wateringMs = timer_millis();
 	}
 	if (moisture.status & MS_CHANGED) {
 		lcd_printMoisture(&moisture);
 	}
-	timer_sample(&time);
-	lcd_printClock(&time);
+	timer_sample(&time, wateringMs);
+	lcd_printTime(&time, wateringMs);
 	lcd_bright();
 
 	delay(100);
 }
 
 void setup() {
-	util_cycle();
-	timer_reset();
+	timer_init();
 	log_init();
+	sos_init();
 }
 
 void loop() {
-	util_cycle();
+	timer_cycle();
 	log_cycle();
-
-	ln("Hi there !");
-	delay(763);
+	sos_next();
 }

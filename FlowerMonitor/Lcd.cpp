@@ -37,7 +37,7 @@ void lcd_init() {
 	clcd(1);
 	lcd.print("000 --~ 00:00:00");
 
-	lastUpdate = util_millis();
+	lastUpdate = timer_millis();
 }
 
 void lcd_printMoisture(Moisture *moisture) {
@@ -51,11 +51,11 @@ void lcd_printMoisture(Moisture *moisture) {
 	lcd.print(pch);
 }
 
-void lcd_printClock(Time *time) {
-	if ((util_millis() - lastUpdate) < LCD_CLOCK_UPDATE_MS) {
+void lcd_printClock(Time *time, uint32_t timeMilis) {
+	if ((timeMilis - lastUpdate) < LCD_CLOCK_UPDATE_MS) {
 		return;
 	}
-	lastUpdate = util_millis();
+	lastUpdate = timeMilis;
 	char buf[4];
 
 	// dd

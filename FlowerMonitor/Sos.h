@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 #include "Domain.h"
-#include "Util.h"
 #include "Log.h"
 
 void sos_reset();
 void sos_next();
+void sos_init();
 
 #endif /* Sos_H_ */

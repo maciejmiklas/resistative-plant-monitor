@@ -48,9 +48,9 @@ void hygro_update(Moisture *moisture) {
 		if (proc > moisture->proc + 5) {
 			moisture->status |= MS_INCREASED;
 			moisture->maxProc = proc;
-			moistureIncreasedMs = util_millis();
+			moistureIncreasedMs = timer_millis();
 
-		} else if ((util_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
+		} else if ((timer_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
 			moisture->maxProc = proc;
 
 		} else if (proc > moisture->maxProc) {
