@@ -8,6 +8,6 @@
 
 void log_init();
 void log_cycle();
-void log_ln(const char *fmt, ...);
+void ln(const char *fmt, ...);
 
 #endif /* Log_H_ */

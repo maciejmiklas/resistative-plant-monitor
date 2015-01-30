@@ -1,30 +1,29 @@
 #include "Log.h"
 
-Time time;
+Time lt;
 
 void log_init() {
 	Serial.begin(115200);
 }
 
 void log_cycle() {
-	timer_sample(&time);
+	timer_sample(&lt);
 }
 
 void startl() {
-	char buf[48];
-	// TODO add milis and micros
-	sprintf(buf, ">> [%03d-%02d:%02d:%02d,%03d] ->", time.dd, time.hh, time.mm,
-			time.ss, time.ml);
+	char buf[26];
+	sprintf(buf, ">>[%03u-%02u:%02u:%02u,%03u]-> ", lt.dd, lt.hh, lt.mm, lt.ss,
+			lt.ml);
 	Serial.print(buf);
 }
 
-void log_ln(const char *fmt, ...) {
+void ln(const char *fmt, ...) {
 	startl();
 	char buf[64];
 	va_list va;
 	va_start(va, fmt);
 	vsprintf(buf, fmt, va);
 	va_end(va);
-	Serial.print(buf);
+	Serial.println(buf);
 }
 

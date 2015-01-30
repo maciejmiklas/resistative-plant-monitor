@@ -33,7 +33,7 @@ uint16_t calcProc() {
 }
 
 void hygro_init(Moisture *moisture) {
-	log_ln("Initializing hygrometer module");
+	ln("Initializing hygrometer module");
 	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;

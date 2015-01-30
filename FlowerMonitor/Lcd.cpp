@@ -22,7 +22,7 @@ void clcd(uint8_t row) {
 }
 
 void lcd_init() {
-	log_ln("Initializing LCD module");
+	ln("Initializing LCD module");
 
 	lcd.begin(16, 2);
 	lcd.noAutoscroll();

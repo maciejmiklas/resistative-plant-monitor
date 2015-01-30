@@ -3,7 +3,7 @@
 Time time;
 Moisture moisture;
 
-void setup() {
+void setup1() {
 	log_init();
 	timer_reset();
 	lcd_init();
@@ -11,7 +11,7 @@ void setup() {
 	sos_reset();
 }
 
-void loop() {
+void loop1() {
 	util_cycle();
 	log_cycle();
 
@@ -29,4 +29,16 @@ void loop() {
 	delay(100);
 }
 
+void setup() {
+	util_cycle();
+	timer_reset();
+	log_init();
+}
 
+void loop() {
+	util_cycle();
+	log_cycle();
+
+	ln("Hi there !");
+	delay(763);
+}
