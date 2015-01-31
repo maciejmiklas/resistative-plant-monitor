@@ -5,7 +5,9 @@
 
 // LCD
 #define LCD_LIGHT_SENS_PIN 1
-#define LCD_LIGHT_SESN_SENSITIVITY 10
+#define LCD_LIGHT_ADJUST_PIN 2
+#define LCD_LIGHT_ADJUST_SENSITIVITY 10
+#define LCD_LIGHT_SESN_SENSITIVITY 40
 #define LCD_BACKLIGHT_PIN 9
 #define LCD_BACKLIGHT_INIT 200
 #define LCD_BACKLIGHT_MIN 140
@@ -21,8 +23,13 @@
 #define SOS_PAUSE_DONE 2000
 #define SOS_PAUSE_MIDLE 500
 
+// SOS Alarm driver
+#define ALATM_THRESHOLD_PIN 3
+#define ALATM_ADJUST_SENSITIVITY 10 // 0-1023
+
 // HYGRO
 #define MOISTURE_READ_PIN 0
+#define MOISTURE_ADJUST_PIN 2
 
 /*
  * After plant watering the moisture level can jump very high due to the water flowing across sensor.
@@ -40,7 +47,12 @@ typedef struct {
 } Time;
 
 enum {
-	MS_CHANGED = 0x01, MS_INCREASED = 0x02, MS_ALL = 0x7F
+	// small change
+	MS_CHANGED = 0x01,
+
+	// large change
+	MS_INCREASED = 0x02,
+	MS_ALL = 0x7F
 };
 
 typedef struct {
@@ -49,6 +61,6 @@ typedef struct {
 	byte status;
 } Moisture;
 
-void domain_sort(uint16_t arr[], uint16_t size);
+void domain_sort(uint8_t arr[], uint8_t size);
 
 #endif /* DOMAIN_H_ */

@@ -5,7 +5,7 @@
 #include "Domain.h"
 #include "Log.h"
 
-void hygro_update(Moisture *moisture);
+void hygro_cycle(Moisture *moisture);
 void hygro_init(Moisture *moisture);
 
 #endif /* Hygrometer_H_ */

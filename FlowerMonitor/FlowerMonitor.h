@@ -8,6 +8,7 @@
 #include "Domain.h"
 #include "Sos.h"
 #include "Log.h"
+#include "Alarm.h"
 
 #ifdef __cplusplus
 extern "C" {

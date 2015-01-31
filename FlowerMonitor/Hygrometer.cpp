@@ -1,17 +1,20 @@
 #include "Hygrometer.h"
 
-#define UPROC 9999
+#define NO_VALUE 222
 
-uint16_t readProcCnt = 0;
+uint8_t readProcCnt = 0;
 
-#define PROC_PROBES 60
-uint16_t procs[PROC_PROBES];
+#define MESURE_MS 100
+#define PROC_PROBES 30
+#define MIN_TO_CHANGE 5
+
+uint8_t procs[PROC_PROBES];
 uint32_t moistureIncreasedMs = 0;
+uint32_t moistureMesureMs = 0;
 
-uint16_t readProc() {
-	int read = analogRead(MOISTURE_READ_PIN);
-	uint16_t proc = (1018 - read) / 7.48;
-
+uint8_t readProc() {
+	uint16_t read = analogRead(MOISTURE_READ_PIN);
+	uint16_t proc = (1023 - read) / 8;
 	if (proc < 0) {
 		proc = 0;
 	} else if (proc > 100) {
@@ -20,11 +23,11 @@ uint16_t readProc() {
 	return proc;
 }
 
-uint16_t calcProc() {
+uint8_t calcProc() {
 	readProcCnt++;
 	procs[readProcCnt] = readProc();
 	if (readProcCnt != PROC_PROBES - 1) {
-		return UPROC;
+		return NO_VALUE;
 	}
 
 	domain_sort(procs, PROC_PROBES);
@@ -37,26 +40,38 @@ void hygro_init(Moisture *moisture) {
 	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;
+	moistureMesureMs = timer_millis();
 }
 
-void hygro_update(Moisture *moisture) {
+void hygro_cycle(Moisture *moisture) {
 	moisture->status &= ~(MS_CHANGED | MS_INCREASED);
+	if (timer_millis() - moistureMesureMs < MESURE_MS) {
+		return;
+	}
 
-	uint16_t proc = calcProc();
-	if (proc != UPROC && proc != moisture->proc) {
+	moistureMesureMs = timer_millis();
+
+	uint8_t proc = calcProc();
+	if (proc != NO_VALUE && abs(proc - moisture->proc) >= MIN_TO_CHANGE) {
 		moisture->status |= MS_CHANGED;
-		if (proc > moisture->proc + 5) {
+		if (proc > moisture->proc + MIN_TO_CHANGE) {
 			moisture->status |= MS_INCREASED;
 			moisture->maxProc = proc;
 			moistureIncreasedMs = timer_millis();
 
-		} else if ((timer_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
+		} else if ((timer_millis() - moistureIncreasedMs)
+				< MOISTURE_MAX_ADOPT_MS) {
+			ln("Reseting max proc - time since last watering < %u",
+					MOISTURE_MAX_ADOPT_MS);
 			moisture->maxProc = proc;
 
 		} else if (proc > moisture->maxProc) {
 			moisture->maxProc = proc;
 		}
 		moisture->proc = proc;
+
+		ln("Moisture has changed = %u%%, Max: %u%%, Status: %d", moisture->proc,
+				moisture->maxProc, moisture->status);
 	}
 }
 

@@ -19,7 +19,6 @@ void doSwitch(uint16_t duration) {
 	if (timer_millis() - switchMs >= duration) {
 		state++;
 		switchMs = timer_millis();
-		ln("switch on %lu and state %u", switchMs, state);
 	}
 }
 // States:

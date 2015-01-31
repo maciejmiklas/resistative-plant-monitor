@@ -1,6 +1,6 @@
 #include <Domain.h>
 
-void domain_sort(uint16_t arr[], uint16_t size) {
+void domain_sort(uint8_t arr[], uint8_t size) {
 	uint16_t i, temp, j;
 	for (i = 1; i < size; i++) {
 		temp = arr[i];

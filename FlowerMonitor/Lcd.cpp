@@ -7,12 +7,11 @@ typedef struct {
 	uint16_t ss;
 } DTime;
 DTime dTime;
-int lightSensorVal = 0;
 
+int16_t lastLightAdjustVal = 0;
+int16_t lastLightVal = 0;
 uint32_t lastUpdate = 0;
-
 LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
-
 boolean blinkMark = true;
 
 void clcd(uint8_t row) {
@@ -23,6 +22,9 @@ void clcd(uint8_t row) {
 
 void lcd_init() {
 	ln("Initializing LCD module");
+
+	pinMode(LCD_LIGHT_SENS_PIN, INPUT);
+	pinMode(LCD_LIGHT_ADJUST_PIN, INPUT);
 
 	lcd.begin(16, 2);
 	lcd.noAutoscroll();
@@ -51,11 +53,11 @@ void lcd_printMoisture(Moisture *moisture) {
 	lcd.print(pch);
 }
 
-void lcd_printClock(Time *time, uint32_t timeMilis) {
-	if ((timeMilis - lastUpdate) < LCD_CLOCK_UPDATE_MS) {
+void lcd_printTime(Time *time) {
+	if ((timer_millis() - lastUpdate) < LCD_CLOCK_UPDATE_MS) {
 		return;
 	}
-	lastUpdate = timeMilis;
+	lastUpdate = timer_millis();
 	char buf[4];
 
 	// dd
@@ -101,10 +103,20 @@ void lcd_printClock(Time *time, uint32_t timeMilis) {
  * [LCD backlight] = (1267 - [light sensor]) / 5.33
  */
 void lcd_bright() {
-	int lightVal = analogRead(LCD_LIGHT_SENS_PIN);
-	if ( abs(lightSensorVal - lightVal) >= LCD_LIGHT_SESN_SENSITIVITY) {
-		lightSensorVal = lightVal;
-		int lcdLight = (1400 - lightVal) / 5.33;
+	int16_t lightAdjustVal = analogRead(LCD_LIGHT_ADJUST_PIN);
+	int16_t lightVal = analogRead(LCD_LIGHT_SENS_PIN);
+
+	if ( abs(lastLightVal - lightVal) >= LCD_LIGHT_SESN_SENSITIVITY
+			|| abs(lightAdjustVal - lastLightAdjustVal)
+					>= LCD_LIGHT_ADJUST_SENSITIVITY) {
+
+		lastLightAdjustVal = lightAdjustVal;
+		lastLightVal = lightVal;
+
+		int16_t lcdLight = (800 + lightAdjustVal - lightVal) / 5;
+
+		ln("Adopting LCD backlight. Sensor: %u, LCD: %u, Adjust(def 500): %u",
+				lightVal, lcdLight, lightAdjustVal);
 
 		if (lcdLight > LCD_BACKLIGHT_MAX) {
 			lcdLight = LCD_BACKLIGHT_MAX;
@@ -113,10 +125,6 @@ void lcd_bright() {
 		}
 
 		analogWrite(LCD_BACKLIGHT_PIN, lcdLight);
-
-		Serial.print(lightVal);
-		Serial.print(" - ");
-		Serial.println(lcdLight);
 	}
 }
 
