@@ -3,6 +3,7 @@
 Time lt;
 uint32_t runMs;
 uint32_t lastStatusMs = 0;
+uint16_t lastRam = 0;
 
 void log_init() {
 	Serial.begin(115200);
@@ -14,8 +15,11 @@ void log_status() {
 		return;
 	}
 	lastStatusMs = util_millis();
-	uint32_t free = util_freeRam();
-	ln("Status -> Free RAM: %u", free);
+	uint16_t free = util_freeRam();
+	if (lastRam != free) {
+		lastRam = free;
+		ln("Status -> Free RAM: %u", free);
+	}
 }
 
 void log_cycle() {
