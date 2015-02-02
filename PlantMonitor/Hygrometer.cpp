@@ -24,9 +24,9 @@ uint8_t readProc() {
 }
 
 uint8_t calcProc() {
-	readProcCnt++;
 	procs[readProcCnt] = readProc();
 	if (readProcCnt != PROC_PROBES - 1) {
+		readProcCnt++;
 		return NO_VALUE;
 	}
 

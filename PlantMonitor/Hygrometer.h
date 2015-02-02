@@ -5,8 +5,8 @@
 #include "Log.h"
 #include "Util.h"
 
+/* Analog input pin used to read moisture */
 #define MOISTURE_READ_PIN 0
-#define MOISTURE_ADJUST_PIN 2
 
 /*
  * After plant watering the moisture level can jump very high due to the water flowing across sensor.

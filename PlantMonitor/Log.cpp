@@ -1,13 +1,26 @@
 #include "Log.h"
 
 Time lt;
-uint32_t runMilis;
+uint32_t runMs;
+uint32_t lastStatusMs = 0;
+
 void log_init() {
 	Serial.begin(115200);
-	runMilis = util_millis();
+	runMs = util_millis();
 }
+
+void log_status() {
+	if (util_millis() - lastStatusMs < LOG_PRINT_STATUS_MS) {
+		return;
+	}
+	lastStatusMs = util_millis();
+	uint32_t free = util_freeRam();
+	ln("Status -> Free RAM: %u", free);
+}
+
 void log_cycle() {
-	timer_sample(&lt, runMilis);
+	timer_sample(&lt, runMs);
+	log_status();
 }
 
 void ln(const char *fmt, ...) {

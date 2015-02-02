@@ -15,7 +15,6 @@ void util_sort(uint8_t arr[], uint8_t size) {
 	}
 }
 
-
 void util_init() {
 	util_cycle();
 }
@@ -26,4 +25,10 @@ void util_cycle() {
 
 uint32_t util_millis() {
 	return cycleMilis;
+}
+
+uint32_t util_freeRam() {
+	extern int __heap_start, *__brkval;
+	int v;
+	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
