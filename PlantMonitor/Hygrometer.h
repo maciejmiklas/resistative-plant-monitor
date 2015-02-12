@@ -15,6 +15,15 @@
  */
 #define MOISTURE_MAX_ADOPT_MS 600000
 
+/*
+ * Adoption factor used to transfer analog read to percentage.
+ */
+#define MOISTURE_PROC_ADOPT 8
+
+#define MESURE_FREQ_MS 100
+#define PROC_PROBES 30
+#define MIN_TO_CHANGE 5
+
 enum {
 	// small change
 	MS_CHANGED = 0x01,

@@ -4,17 +4,13 @@
 
 uint8_t readProcCnt = 0;
 
-#define MESURE_FREQ_MS 100
-#define PROC_PROBES 30
-#define MIN_TO_CHANGE 5
-
 uint8_t procs[PROC_PROBES];
 uint32_t moistureIncreasedMs = 0;
 uint32_t lastMesureMs = 0;
 
 uint8_t readProc() {
 	uint16_t read = analogRead(MOISTURE_READ_PIN);
-	uint16_t proc = (1023 - read) / 8;
+	uint16_t proc = (1023 - read) / MOISTURE_PROC_ADOPT;
 	if (proc < 0) {
 		proc = 0;
 	} else if (proc > 100) {
