@@ -1,4 +1,2 @@
-arduino
+Arduino based plant monitor
 =======
-
-my arduino projects....
