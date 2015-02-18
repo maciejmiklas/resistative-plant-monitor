@@ -15,7 +15,7 @@ void util_sort(uint8_t arr[], uint8_t size) {
 	}
 }
 
-void util_init() {
+void util_setup() {
 	util_cycle();
 }
 

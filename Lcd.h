@@ -37,7 +37,7 @@
 /* Interval for update of LCD display */
 #define LCD_CLOCK_UPDATE_MS 500
 
-void lcd_init();
+void lcd_setup();
 void lcd_cycle();
 
 void lcd_printTime(Time *time);

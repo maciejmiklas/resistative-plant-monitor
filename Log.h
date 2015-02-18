@@ -9,7 +9,7 @@
 /* Trigger time to print system information, like free memory. */
 #define LOG_PRINT_STATUS_MS 1000
 
-void log_init();
+void log_setup();
 void log_cycle();
 
 void ln(const char *fmt, ...);

@@ -19,6 +19,6 @@
 #define ALARM_ADJUST_SENSITIVITY 10 // 0-1023
 
 void alarm_cycle(uint8_t moisturePorc);
-void alarm_init();
+void alarm_setup();
 
-#endif /* Sos_H_ */
+#endif /* Alarm_H_ */

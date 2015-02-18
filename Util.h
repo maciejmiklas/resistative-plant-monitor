@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-void util_init();
+void util_setup();
 void util_cycle();
 
 void util_sort(uint8_t arr[], uint8_t size);

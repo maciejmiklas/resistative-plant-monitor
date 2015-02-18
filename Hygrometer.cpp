@@ -31,7 +31,7 @@ uint8_t calcProc() {
 	return procs[PROC_PROBES / 2 + 1];
 }
 
-void hygro_init(Moisture *moisture) {
+void hygro_setup(Moisture *moisture) {
 	ln("Initializing hygrometer module");
 	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;

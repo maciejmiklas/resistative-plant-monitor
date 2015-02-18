@@ -20,7 +20,7 @@ void clcd(uint8_t row) {
 	lcd.setCursor(0, row);
 }
 
-void lcd_init() {
+void lcd_setup() {
 	ln("Initializing LCD module");
 
 	pinMode(LCD_LIGHT_SENS_PIN, INPUT);

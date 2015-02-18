@@ -5,7 +5,7 @@ uint32_t runMs;
 uint32_t lastStatusMs = 0;
 uint16_t lastRam = 0;
 
-void log_init() {
+void log_setup() {
 	Serial.begin(115200);
 	runMs = util_millis();
 }

@@ -5,7 +5,7 @@ uint32_t switchMs = 0;
 uint8_t lastPinVal = -1;
 boolean sosOn = false;
 
-void sos_init() {
+void sos_setup() {
 	pinMode(SOS_PIN, OUTPUT);
 	sos_off();
 }

@@ -5,11 +5,11 @@ Moisture moisture;
 uint32_t wateringMs;
 
 void setup() {
-	util_init();
-	log_init();
-	lcd_init();
-	hygro_init(&moisture);
-	alarm_init();
+	util_setup();
+	log_setup();
+	lcd_setup();
+	hygro_setup(&moisture);
+	alarm_setup();
 	wateringMs = util_millis();
 }
 

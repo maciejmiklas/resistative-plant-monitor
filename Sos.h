@@ -25,7 +25,7 @@
 /* Pause time between 3x long and 3x short flash. */
 #define SOS_PAUSE_MIDLE 500
 
-void sos_init();
+void sos_setup();
 void sos_cycle();
 
 void sos_on();

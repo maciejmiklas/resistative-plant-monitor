@@ -39,7 +39,7 @@ typedef struct {
 	byte status;
 } Moisture;
 
-void hygro_init(Moisture *moisture);
+void hygro_setup(Moisture *moisture);
 
 void hygro_sample(Moisture *moisture);
 

@@ -22,7 +22,7 @@ void alarm_cycle(uint8_t moisturePorc) {
 	sos_cycle();
 }
 
-void alarm_init() {
+void alarm_setup() {
 	pinMode(ALARM_THRESHOLD_PIN, INPUT);
-	sos_init();
+	sos_setup();
 }
