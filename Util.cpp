@@ -1,6 +1,6 @@
 #include <Util.h>
 
-uint32_t cycleMilis;
+static uint32_t cycleMs;
 
 void util_sort(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
@@ -20,11 +20,11 @@ void util_setup() {
 }
 
 void util_cycle() {
-	cycleMilis = millis();
+	cycleMs = millis();
 }
 
 uint32_t util_millis() {
-	return cycleMilis;
+	return cycleMs;
 }
 
 uint16_t util_freeRam() {

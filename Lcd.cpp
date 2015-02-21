@@ -6,15 +6,15 @@ typedef struct {
 	uint16_t mm;
 	uint16_t ss;
 } DTime;
-DTime dTime;
+static DTime dTime;
 
-int16_t lastLightAdjustVal = 0;
-int16_t lastLightVal = 0;
-uint32_t lastUpdate = 0;
-LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
-boolean blinkMark = true;
+static int16_t lastLightAdjustVal = 0;
+static int16_t lastLightVal = 0;
+static uint32_t lastUpdate = 0;
+static LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
+static boolean blinkMark = true;
 
-void clcd(uint8_t row) {
+static void clcd(uint8_t row) {
 	lcd.setCursor(0, row);
 	lcd.print("                ");
 	lcd.setCursor(0, row);

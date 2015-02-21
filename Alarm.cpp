@@ -1,7 +1,7 @@
 #include "Alarm.h"
 
-int16_t lastAlarmThreshold = 0;
-uint8_t alarmThresholdProc = 30;
+static int16_t lastAlarmThreshold = 0;
+static uint8_t alarmThresholdProc = 30;
 
 void alarm_cycle(uint8_t moisturePorc) {
 	int16_t alarmThreshold = analogRead(ALARM_THRESHOLD_PIN);

@@ -1,9 +1,9 @@
 #include "Sos.h"
 
-uint8_t state;
-uint32_t switchMs = 0;
-uint8_t lastPinVal = -1;
-boolean sosOn = false;
+static uint8_t state;
+static uint32_t switchMs = 0;
+static uint8_t lastPinVal = -1;
+static boolean sosOn = false;
 
 void sos_setup() {
 	pinMode(SOS_PIN, OUTPUT);
@@ -22,7 +22,7 @@ void sos_off() {
 	sosOn = false;
 }
 
-void doSwitch(uint16_t duration) {
+static void doSwitch(uint16_t duration) {
 	if (util_millis() - switchMs >= duration) {
 		state++;
 		switchMs = util_millis();

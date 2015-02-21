@@ -13,7 +13,7 @@ void setup() {
 	wateringMs = util_millis();
 }
 
-// "xxx_cycle()" methods are meant to be called on every loop. Those are non blocking methods.
+// "xxx_loop()" methods are meant to be called on every loop. Those are non blocking methods.
 void loop() {
 	// util has to be called as first, because it creates snapshot of milliseconds (util_millis())
 	// that is being used by most functions.

@@ -1,9 +1,9 @@
 #include "Log.h"
 
-Time lt;
-uint32_t runMs;
-uint32_t lastStatusMs = 0;
-uint16_t lastRam = 0;
+static Time lt;
+static uint32_t runMs;
+static uint32_t lastStatusMs = 0;
+static uint16_t lastRam = 0;
 
 void log_setup() {
 	Serial.begin(115200);

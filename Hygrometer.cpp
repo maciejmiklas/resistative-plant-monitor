@@ -2,11 +2,11 @@
 
 #define NO_VALUE 222
 
-uint8_t readProcCnt = 0;
+static uint8_t readProcCnt = 0;
 
-uint8_t procs[PROC_PROBES];
-uint32_t moistureIncreasedMs = 0;
-uint32_t lastMesureMs = 0;
+static uint8_t procs[PROC_PROBES];
+static uint32_t moistureIncreasedMs = 0;
+static uint32_t lastMesureMs = 0;
 
 uint8_t readProc() {
 	uint16_t read = analogRead(MOISTURE_READ_PIN);
