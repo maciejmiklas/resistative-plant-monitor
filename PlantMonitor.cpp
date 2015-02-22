@@ -38,4 +38,6 @@ void loop() {
 
 	// eventually blink sos
 	alarm_cycle(moisture.proc);
+
+	delay(100);
 }

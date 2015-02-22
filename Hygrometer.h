@@ -20,8 +20,8 @@
  */
 #define MOISTURE_PROC_ADOPT 8
 
-#define MESURE_FREQ_MS 100
-#define PROC_PROBES 30
+#define MESURE_FREQ_MS 10000
+#define PROC_PROBES 10
 #define MIN_TO_CHANGE 5
 
 enum {
