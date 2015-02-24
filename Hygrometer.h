@@ -9,6 +9,18 @@
 #define MOISTURE_READ_PIN 0
 
 /*
+ * Digital out PIN used to power on moisture sensor.
+ */
+#define MOISTURE_POWER_PIN 11
+
+/*
+ * Time in milliseconds to warm up moisture sensor before taking a measurement.
+ * Moisture sensor will be powered on short before taking a measurement, and right after that
+ * it goes off.
+ */
+#define MOISTURE_WARM_UP_MS 1000
+
+/*
  * After plant watering the moisture level can jump very high due to the water flowing across sensor.
  * Max time will be calculated as the lowest value during adoption time. Adoption timer starts
  * after we recognize significantly increased moisture level. Default is 10 minutes.
@@ -39,7 +51,7 @@ typedef struct {
 	byte status;
 } Moisture;
 
-void hygro_setup(Moisture *moisture);
+Moisture* hygro_setup();
 
 void hygro_sample(Moisture *moisture);
 

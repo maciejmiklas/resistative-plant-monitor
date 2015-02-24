@@ -31,12 +31,15 @@ uint8_t calcProc() {
 	return procs[PROC_PROBES / 2 + 1];
 }
 
-void hygro_setup(Moisture *moisture) {
+Moisture* hygro_setup() {
 	ln("Initializing hygrometer module");
+	Moisture *moisture = (Moisture *)malloc(sizeof(Moisture));
 	moisture->status = 0 | MS_CHANGED;
 	moisture->maxProc = 0;
 	moisture->proc = 0;
 	lastMesureMs = util_millis();
+	pinMode(MOISTURE_POWER_PIN, OUTPUT);
+	return moisture;
 }
 
 void hygro_sample(Moisture *moisture) {

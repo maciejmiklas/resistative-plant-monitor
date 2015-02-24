@@ -1,14 +1,14 @@
 #include "PlantMonitor.h"
 
 Time time;
-Moisture moisture;
+Moisture* moisture;
 uint32_t wateringMs;
 
 void setup() {
 	util_setup();
 	log_setup();
 	lcd_setup();
-	hygro_setup(&moisture);
+	moisture = hygro_setup();
 	alarm_setup();
 	wateringMs = util_millis();
 }
@@ -20,13 +20,13 @@ void loop() {
 	util_cycle();
 	log_cycle();
 
-	hygro_sample(&moisture);
-	if (moisture.status & MS_INCREASED) {
-		ln("Recognized plant watering, status: %u", moisture.status);
+	hygro_sample(moisture);
+	if (moisture->status & MS_INCREASED) {
+		ln("Recognized plant watering, status: %u", moisture->status);
 		wateringMs = util_millis();
 	}
-	if (moisture.status & MS_CHANGED) {
-		lcd_printMoisture(&moisture);
+	if (moisture->status & MS_CHANGED) {
+		lcd_printMoisture(moisture);
 	}
 
 	// update time passed by since last watering
@@ -37,7 +37,7 @@ void loop() {
 	lcd_cycle();
 
 	// eventually blink sos
-	alarm_cycle(moisture.proc);
+	alarm_cycle(moisture->proc);
 
 	delay(100);
 }
