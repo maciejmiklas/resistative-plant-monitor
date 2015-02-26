@@ -20,7 +20,7 @@ void loop() {
 	util_cycle();
 	log_cycle();
 
-	hygro_sample(moisture);
+	hygro_cycle(moisture);
 	if (moisture->status & MS_INCREASED) {
 		ln("Recognized plant watering, status: %u", moisture->status);
 		wateringMs = util_millis();

@@ -10,15 +10,16 @@
 
 /*
  * Digital out PIN used to power on moisture sensor.
+ * LOW enables sensor, HIGH disables (NPN transistor).
  */
-#define MOISTURE_POWER_PIN 11
+#define MOISTURE_POWER_PIN 8
 
 /*
  * Time in milliseconds to warm up moisture sensor before taking a measurement.
  * Moisture sensor will be powered on short before taking a measurement, and right after that
  * it goes off.
  */
-#define MOISTURE_WARM_UP_MS 1000
+#define MOISTURE_WARM_UP_MS 5000
 
 /*
  * After plant watering the moisture level can jump very high due to the water flowing across sensor.
@@ -29,11 +30,16 @@
 
 /*
  * Adoption factor used to transfer analog read to percentage.
+ * sensor read:
+ * 0 - 780 - "sensor dry" - "sensor in water"
+ * 0 - 100%  - "sensor dry" - "sensor in water"
  */
 #define MOISTURE_PROC_ADOPT 8
 
 #define MESURE_FREQ_MS 10000
 #define PROC_PROBES 10
+
+/* minimal change in % to recognize moisture change */
 #define MIN_TO_CHANGE 5
 
 enum {
@@ -53,6 +59,6 @@ typedef struct {
 
 Moisture* hygro_setup();
 
-void hygro_sample(Moisture *moisture);
+void hygro_cycle(Moisture *moisture);
 
 #endif /* Hygrometer_H_ */

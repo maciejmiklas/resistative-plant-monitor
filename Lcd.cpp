@@ -116,9 +116,6 @@ void lcd_cycle() {
 
 		int16_t lcdLight = (800 + lightAdjustVal - lightVal) / 5;
 
-		ln("Adopting LCD backlight. Sensor: %u, LCD: %u, Adjust(def 500): %u",
-				lightVal, lcdLight, lightAdjustVal);
-
 		if (lcdLight > LCD_BACKLIGHT_MAX) {
 			lcdLight = LCD_BACKLIGHT_MAX;
 		} else if (lcdLight < LCD_BACKLIGHT_MIN) {

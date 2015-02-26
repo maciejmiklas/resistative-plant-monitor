@@ -43,3 +43,19 @@ void ln(const char *fmt, ...) {
 	Serial.println(buf);
 }
 
+void de(const char *fmt, ...) {
+	char buf[80];
+
+	// print time
+	sprintf(buf, "--[%03u-%02u:%02u:%02u,%03u]-> ", lt.dd, lt.hh, lt.mm, lt.ss,
+			lt.ml);
+	Serial.print(buf);
+
+	// print the message
+	va_list va;
+	va_start(va, fmt);
+	vsprintf(buf, fmt, va);
+	va_end(va);
+	Serial.println(buf);
+}
+
