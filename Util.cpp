@@ -2,7 +2,7 @@
 
 static uint32_t cycleMs;
 
-void util_sort(uint8_t arr[], uint8_t size) {
+void util_sort_u8(uint8_t arr[], uint8_t size) {
 	uint8_t i, temp, j;
 	for (i = 1; i < size; i++) {
 		temp = arr[i];
@@ -30,5 +30,14 @@ uint32_t util_millis() {
 uint16_t util_freeRam() {
 	extern int __heap_start, *__brkval;
 	int v;
-	return (uint16_t) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+	return (uint16_t) &v
+			- (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+uint16_t util_abs16(int16_t val) {
+	return val > 0 ? val : val * -1;
+
+}
+uint8_t util_abs8(int8_t val) {
+	return val > 0 ? val : val * -1;
 }

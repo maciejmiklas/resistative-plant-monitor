@@ -1,5 +1,5 @@
-#ifndef Hygrometer_H_
-#define Hygrometer_H_
+#ifndef MoistureMeter_H_
+#define MoistureMeter_H_
 
 #include <Arduino.h>
 #include "Log.h"
@@ -29,14 +29,15 @@
 #define MOISTURE_MAX_ADOPT_MS 600000
 
 /*
- * Adoption factor used to transfer analog read to percentage.
- * sensor read:
- * 0 - 780 - "sensor dry" - "sensor in water"
- * 0 - 100%  - "sensor dry" - "sensor in water"
+ * Adoption factor used to transfer analog read to percentage:
+ * IN: (0 - 1023) -> ("sensor dry" - "sensor in water")
+ * OUT: (0 - 100%)  -> ("sensor dry" - "sensor in water")
+ *
+ * Calculated percentage can be outside 0-100 range - it will be corrected later on, but not above 256
  */
-#define MOISTURE_PROC_ADOPT 8
+#define probeToPercent(read) (read/8)
 
-#define MESURE_FREQ_MS 10000
+#define MESURE_FREQ_MS 300000
 #define PROC_PROBES 10
 
 /* minimal change in % to recognize moisture change */
@@ -57,8 +58,8 @@ typedef struct {
 	byte status;
 } Moisture;
 
-Moisture* hygro_setup();
+Moisture* mmet_setup();
 
-void hygro_cycle(Moisture *moisture);
+void mmet_cycle(Moisture *moisture);
 
-#endif /* Hygrometer_H_ */
+#endif /* MoistureMeter_H_ */

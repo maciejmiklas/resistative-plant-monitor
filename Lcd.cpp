@@ -1,18 +1,11 @@
 #include "Lcd.h"
 
-typedef struct {
-	uint16_t dd;
-	uint16_t hh;
-	uint16_t mm;
-	uint16_t ss;
-} DTime;
-static DTime dTime;
-
-static int16_t lastLightAdjustVal = 0;
-static int16_t lastLightVal = 0;
+static uint16_t lastLightAdjustVal = 0;
+static uint16_t lastLightSensorVal = 0;
 static uint32_t lastUpdate = 0;
 static LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 static boolean blinkMark = true;
+static Time dTime;
 
 static void clcd(uint8_t row) {
 	lcd.setCursor(0, row);
@@ -97,31 +90,24 @@ void lcd_printTime(Time *time) {
 	}
 }
 
-/*
- * adopt LCD back light on changing light conditions
- * Light sensor: 200 - 1000 (bright - dark)
- * LCD backlight: 200 - 50 (bright, dark)
- * [LCD backlight] = (1267 - [light sensor]) / 5.33
- */
 void lcd_cycle() {
-	int16_t lightAdjustVal = analogRead(LCD_LIGHT_ADJUST_PIN);
-	int16_t lightVal = analogRead(LCD_LIGHT_SENS_PIN);
+	uint16_t lightAdjustVal = analogRead(LCD_LIGHT_ADJUST_PIN);
+	uint16_t lightSensorVal = analogRead(LCD_LIGHT_SENS_PIN);
 
-	if ( abs(lastLightVal - lightVal) >= LCD_LIGHT_SESN_SENSITIVITY
-			|| abs(lightAdjustVal - lastLightAdjustVal)
-					>= LCD_LIGHT_ADJUST_SENSITIVITY) {
-
+	boolean adjust = false;
+	if (util_abs16(lightAdjustVal - lastLightAdjustVal) >= LCD_LIGHT_ADJUST_SENSITIVITY) {
 		lastLightAdjustVal = lightAdjustVal;
-		lastLightVal = lightVal;
-
-		int16_t lcdLight = (800 + lightAdjustVal - lightVal) / 5;
+		adjust = true;
+	}
+	if (util_abs16(lastLightSensorVal - lightSensorVal) >= LCD_LIGHT_SESN_SENSITIVITY || adjust) {
+		lastLightSensorVal = lightSensorVal;
+		int16_t lcdLight = adoptLcdBacklight(lightSensorVal, lightAdjustVal);
 
 		if (lcdLight > LCD_BACKLIGHT_MAX) {
 			lcdLight = LCD_BACKLIGHT_MAX;
 		} else if (lcdLight < LCD_BACKLIGHT_MIN) {
 			lcdLight = LCD_BACKLIGHT_MIN;
 		}
-
 		analogWrite(LCD_BACKLIGHT_PIN, lcdLight);
 	}
 }

@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "Timer.h"
 #include "Lcd.h"
-#include "Hygrometer.h"
+#include "MoistureMeter.h"
 #include "Sos.h"
 #include "Log.h"
 #include "Alarm.h"

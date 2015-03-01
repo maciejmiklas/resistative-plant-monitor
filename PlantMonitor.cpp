@@ -1,14 +1,14 @@
 #include "PlantMonitor.h"
 
-Time time;
-Moisture* moisture;
-uint32_t wateringMs;
+static Time time;
+static Moisture* moisture;
+static uint32_t wateringMs;
 
 void setup() {
 	util_setup();
 	log_setup();
 	lcd_setup();
-	moisture = hygro_setup();
+	moisture = mmet_setup();
 	alarm_setup();
 	wateringMs = util_millis();
 }
@@ -20,7 +20,7 @@ void loop() {
 	util_cycle();
 	log_cycle();
 
-	hygro_cycle(moisture);
+	mmet_cycle(moisture);
 	if (moisture->status & MS_INCREASED) {
 		ln("Recognized plant watering, status: %u", moisture->status);
 		wateringMs = util_millis();

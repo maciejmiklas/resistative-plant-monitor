@@ -1,4 +1,4 @@
-#include "Hygrometer.h"
+#include "MoistureMeter.h"
 
 static uint32_t moistureIncreasedMs = 0;
 static uint32_t timerMs = 0;
@@ -25,8 +25,7 @@ void (*state)(Moisture *moisture) = &state_startWarmup;
 
 static uint8_t probeProc() {
 	uint16_t read = analogRead(MOISTURE_READ_PIN);
-	de("read %d", read);
-	uint8_t proc = read / MOISTURE_PROC_ADOPT;
+	uint8_t proc = probeToPercent(read);
 
 	if (proc < 0) {
 		proc = 0;
@@ -41,7 +40,7 @@ static uint8_t readProc() {
 	for (int i = 0; i < PROC_PROBES; i++) {
 		procs[i] = probeProc();
 	}
-	util_sort(procs, PROC_PROBES);
+	util_sort_u8(procs, PROC_PROBES);
 	return procs[PROC_PROBES / 2 + 1];
 }
 
@@ -49,12 +48,11 @@ static void startTimer() {
 	timerMs = util_millis();
 }
 
-static boolean checkTimer(uint16_t time) {
+static boolean checkTimer(uint32_t time) {
 	return util_millis() - timerMs > time;
 }
 
 static void state_startWarmup(Moisture *moisture) {
-	de("state_startWarmup");
 	startTimer();
 	state = &state_execWarmup;
 	digitalWrite(MOISTURE_POWER_PIN, LOW);
@@ -62,24 +60,21 @@ static void state_startWarmup(Moisture *moisture) {
 
 static void state_execWarmup(Moisture *moisture) {
 	if (checkTimer(MOISTURE_WARM_UP_MS)) {
-		de("state_execWarmup");
 		state = &state_startMeasure;
 	}
 }
 
 static void state_startMeasure(Moisture *moisture) {
-	de("state_startMeasure");
 	state = &state_execMeasure;
 }
 
 static void state_execMeasure(Moisture *moisture) {
 	uint8_t proc = readProc();
-	de("state_execMeasure: %d", proc);
 
 	// power off sensor right after probing
 	digitalWrite(MOISTURE_POWER_PIN, HIGH);
 
-	if (abs(proc - moisture->proc) >= MIN_TO_CHANGE) {
+	if (util_abs8(proc - moisture->proc) >= MIN_TO_CHANGE) {
 		moisture->status |= MS_CHANGED;
 		if (proc > moisture->proc + MIN_TO_CHANGE) {
 			moisture->status |= MS_INCREASED;
@@ -87,8 +82,7 @@ static void state_execMeasure(Moisture *moisture) {
 			moistureIncreasedMs = util_millis();
 
 		} else if ((util_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
-			ln("Reseting max proc based on adoption time after watering",
-			MOISTURE_MAX_ADOPT_MS);
+			ln("Reseting max proc based on adoption time after watering");
 			moisture->maxProc = proc;
 
 		} else if (proc > moisture->maxProc) {
@@ -104,19 +98,17 @@ static void state_execMeasure(Moisture *moisture) {
 }
 
 static void state_startIdle(Moisture *moisture) {
-	de("state_startIdle");
 	startTimer();
 	state = &state_execIdle;
 }
 
 static void state_execIdle(Moisture *moisture) {
 	if (checkTimer(MESURE_FREQ_MS)) {
-		de("state_execIdle");
 		state = &state_startWarmup;
 	}
 }
 
-Moisture* hygro_setup() {
+Moisture* mmet_setup() {
 	ln("Initializing hygrometer module");
 
 	Moisture *moisture = (Moisture *) malloc(sizeof(Moisture));
@@ -131,7 +123,7 @@ Moisture* hygro_setup() {
 	return moisture;
 }
 
-void hygro_cycle(Moisture *moisture) {
+void mmet_cycle(Moisture *moisture) {
 	moisture->status &= ~(MS_CHANGED | MS_INCREASED);
 	(*state)(moisture);
 }

@@ -1,11 +1,11 @@
 #include "Alarm.h"
 
-static int16_t lastAlarmThreshold = 0;
+static uint16_t lastAlarmThreshold = 0;
 static uint8_t alarmThresholdProc = 30;
 
 void alarm_cycle(uint8_t moisturePorc) {
-	int16_t alarmThreshold = analogRead(ALARM_THRESHOLD_PIN);
-	if (abs(alarmThreshold-lastAlarmThreshold) >= ALARM_ADJUST_SENSITIVITY) {
+	uint16_t alarmThreshold = analogRead(ALARM_THRESHOLD_PIN);
+	if (util_abs16(alarmThreshold-lastAlarmThreshold) >= ALARM_ADJUST_SENSITIVITY) {
 		lastAlarmThreshold = alarmThreshold;
 		alarmThresholdProc = map(alarmThreshold, 0, 1025, 0, 100);
 		ln("Adjusted alarm sensitivity. %u = %u%%", alarmThreshold,

@@ -5,12 +5,12 @@
 #include <Arduino.h>
 #include "Timer.h"
 #include "Log.h"
-#include "Hygrometer.h"
+#include "MoistureMeter.h"
 
 /* Input pin for photoresistor. */
 #define LCD_LIGHT_SENS_PIN 1
 
-/* Input pin for variable resistor used to adjust insensitivity of LCD back light. */
+/* Analog input pin for variable resistor used to adjust insensitivity of LCD back light. */
 #define LCD_LIGHT_ADJUST_PIN 2
 
 /*
@@ -36,6 +36,14 @@
 
 /* Interval for update of LCD display */
 #define LCD_CLOCK_UPDATE_MS 500
+
+/*
+ * adopt LCD back light on changing light conditions
+ * Light sensor: 200 - 1000 (bright - dark)
+ * LCD backlight: 200 - 50 (bright, dark)
+ * [LCD backlight] = (1267 - [light sensor]) / 5.33
+ */
+#define adoptLcdBacklight(lightSensorVal, lightAdjustVal) ((800 + lightAdjustVal - lightSensorVal) / 5)
 
 void lcd_setup();
 void lcd_cycle();
