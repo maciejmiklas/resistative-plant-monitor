@@ -29,7 +29,6 @@ void (*state)(Moisture *moisture) = &state_startWarmup;
 static uint8_t probeProc() {
 	uint16_t read = analogRead(MOISTURE_READ_PIN);
 	uint8_t proc = probeToPercent(read);
-	ln("Read: %d", read);
 	if (proc < 0) {
 		proc = 0;
 	} else if (proc > 100) {
