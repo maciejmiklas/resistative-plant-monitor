@@ -5,6 +5,21 @@
 #include "Log.h"
 #include "Util.h"
 
+/*
+ * General flow:
+ * 1) Initialize - setup PINs and go to 2)
+ * 2) Warm up - switch on power for moisture sensor (#MOISTURE_POWER_PIN) and wait for #MOISTURE_WARM_UP_MS
+ * 3) Start measure - take #PROC_PROBES probes from PIN #MOISTURE_READ_PIN, pause for
+ *    #MESURE_PROBE_WAIT_MS after taking single probe.
+ * 4) Calculate median form taken probes and return value, so that the software can react to changing moisture.
+ * 5) Go to sleep for #MESURE_FREQ_MS
+ * 6) Wake up and go to 2)
+ *
+ * NOTE: all wait or delay functions are non blocking. We relay on fact that #mmet_cycle(Moisture) will be called
+ * every few milliseconds and we calculate time required to move from one step to another.
+ * The flow is based on simplified state machine pattern.
+ */
+
 /* Analog input pin used to read moisture */
 #define MOISTURE_READ_PIN 0
 
@@ -37,7 +52,11 @@
  */
 #define probeToPercent(read) (read/8)
 
+/* Start probing after this time */
 #define MESURE_FREQ_MS 300000
+
+/* write time between probes */
+#define MESURE_PROBE_WAIT_MS 1000
 #define PROC_PROBES 10
 
 /* minimal change in % to recognize moisture change */

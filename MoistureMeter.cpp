@@ -2,6 +2,9 @@
 
 static uint32_t moistureIncreasedMs = 0;
 static uint32_t timerMs = 0;
+static uint8_t procs[PROC_PROBES];
+static uint8_t probeIdx = 0;
+#define NO_VALUE 222
 
 /**
  * Hygrometer executes measurement in few steps:
@@ -26,7 +29,7 @@ void (*state)(Moisture *moisture) = &state_startWarmup;
 static uint8_t probeProc() {
 	uint16_t read = analogRead(MOISTURE_READ_PIN);
 	uint8_t proc = probeToPercent(read);
-
+	ln("Read: %d", read);
 	if (proc < 0) {
 		proc = 0;
 	} else if (proc > 100) {
@@ -35,21 +38,26 @@ static uint8_t probeProc() {
 	return proc;
 }
 
-static uint8_t readProc() {
-	uint8_t procs[PROC_PROBES];
-	for (int i = 0; i < PROC_PROBES; i++) {
-		procs[i] = probeProc();
-	}
-	util_sort_u8(procs, PROC_PROBES);
-	return procs[PROC_PROBES / 2 + 1];
-}
-
 static void startTimer() {
 	timerMs = util_millis();
 }
 
 static boolean checkTimer(uint32_t time) {
 	return util_millis() - timerMs > time;
+}
+
+static uint8_t readProc() {
+	if (probeIdx > 0 && !checkTimer(MESURE_PROBE_WAIT_MS)) {
+		return NO_VALUE;
+	}
+	startTimer();
+
+	procs[probeIdx++] = probeProc();
+	if (probeIdx < PROC_PROBES) {
+		return NO_VALUE;
+	}
+	util_sort_u8(procs, PROC_PROBES);
+	return procs[PROC_PROBES / 2 + 1];
 }
 
 static void state_startWarmup(Moisture *moisture) {
@@ -66,11 +74,14 @@ static void state_execWarmup(Moisture *moisture) {
 
 static void state_startMeasure(Moisture *moisture) {
 	state = &state_execMeasure;
+	probeIdx = 0;
 }
 
 static void state_execMeasure(Moisture *moisture) {
 	uint8_t proc = readProc();
-
+	if (proc == NO_VALUE) {
+		return;
+	}
 	// power off sensor right after probing
 	digitalWrite(MOISTURE_POWER_PIN, HIGH);
 
