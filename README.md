@@ -1,9 +1,9 @@
 The goal of this project is to build a controller that will inform you when your plant needs watering. You will see the maximal and current moisture level and the time passed since last watering. Finally when moisture level drops below defined threshold the alarm will rise - in form of LED flashing SOS signal.
 ![](/doc/img/overview.jpg)
+<img src=/doc/img/overview.jpg width=200  />
 
 # Hardware
 ![](/fritzing/PlantMonitor_schem.jpg)
-<img src=/fritzing/PlantMonitor_schem.jpg width=200  />
 
 * you will find fritzing project in folder "fritzing"
 * 2 PIN socket in the left bottom corner is meant to be connected to moisture sensor
