@@ -52,7 +52,7 @@ On the schematic you can see connector called "MOISTURE SENSOR" - this one will 
 Stick your moisture sensor into watter and measure it's resistance - multiply this value by 2 and this will be the value that you should take for R10 - in my case it was 20K. The resistor R14 is optional and you can use it for fine tuning. Assuming that R14 resistance is 0, and sensor is in watter, we will have voltage drop on this sensor, and twice voltage drop on R10 - and this is the value that we are measuring on A0. Once we start removing sensor from watter, it resistance will increase and voltage drop on R10 will respectively decrease.
 
 # Moisture - Software (*Hygrometer.cpp*)
-The method hygro_sample(Moisture) returns current moisture level and status: "no change", "small change" and "level increased".
+The method *hygro_sample(Moisture)* returns current moisture level and status: "no change", "small change" and "level increased".
 hygro_sample(Moisture) is being called on every loop, internally it executes only every 100ms, otherwise it returns "no change". With each run (every 100ms) it probes moisture level, but it does not return it immediately, it stores it in internal array and returns "no change". First after collecting 30 probes, it finds the median and returns proper status. It's worth mentioning, that moisture change is being recognized with tolerance of 5% - just to avoid bouncing.
 
 # LCD Display - Hardware
