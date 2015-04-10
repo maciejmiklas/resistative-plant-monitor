@@ -16,7 +16,7 @@ The goal of this project is to build a controller that will inform you when your
 # Software design
 Whole project is divided into modules, each one in separate class file.
 
-I dis not use interrupts, so every module is controlled from main loop in PlantMonitor.cpp.
+I dis not use interrupts, so every module is controlled from main loop in *PlantMonitor.cpp*.
 
 Each module has to be initialized and has to execute some operations once in a while. For this propose each module defines two functions: *abc_setup()* and *abc_cycle()* - *abc* would be a module name. The setup method has to be called only once and this happens in *PlantMonitor#setup()*. The cycle method will be called on every loop. Each cycle method internally measures time and runs only when it should (like every 100 ms) without blocking.
 
@@ -51,7 +51,7 @@ On the schematic you can see connector called "MOISTURE SENSOR" - this one will 
 
 Stick your moisture sensor into watter and measure it's resistance - multiply this value by 2 and this will be the value that you should take for R10 - in my case it was 20K. The resistor R14 is optional and you can use it for fine tuning. Assuming that R14 resistance is 0, and sensor is in watter, we will have voltage drop on this sensor, and twice voltage drop on R10 - and this is the value that we are measuring on A0. Once we start removing sensor from watter, it resistance will increase and voltage drop on R10 will respectively decrease.
 
-# Moisture - Software (Hygrometer.cpp)
+# Moisture - Software (*Hygrometer.cpp*)
 The method hygro_sample(Moisture) returns current moisture level and status: "no change", "small change" and "level increased".
 hygro_sample(Moisture) is being called on every loop, internally it executes only every 100ms, otherwise it returns "no change". With each run (every 100ms) it probes moisture level, but it does not return it immediately, it stores it in internal array and returns "no change". First after collecting 30 probes, it finds the median and returns proper status. It's worth mentioning, that moisture change is being recognized with tolerance of 5% - just to avoid bouncing.
 
@@ -72,21 +72,23 @@ You can see on screenshots below dependency between PWM duty (blue) and constant
 The time required  to change LCD backlight from maximal brightness to minimal takes 440 ms.
 ![](/doc/img/DS1Z_QuickPrint5.jpg)
 
-# LCD Display - Software (Lcd.cpp)
-The initialization phase (lcd_stup()) prints all static characters - those will not change any more,  all other characters will be printed only if they have changed - this reduces flickering. 
-The lcd_cycle() will get called on every loop from PlantMonitor#loop() and it adopts LCD backlight for changing enviorment.
-Lcd.cpp contains also one function that prints time and another function that prints moisture - that's all.
+# LCD Display - Software (*Lcd.cpp*)
+The initialization phase (*lcd_stup()*) prints all static characters - those will not change any more,  all other characters will be printed only if they have changed - this reduces flickering. 
+The lcd_cycle() will get called on every loop from *PlantMonitor#loop()* and it adopts LCD backlight for changing enviorment.
+*Lcd.cpp* contains also one function that prints time and another function that prints moisture - that's all.
 
 # SOS LED
 t's just a LED connected to A10. The Sos.cpp controls the blinking frequency. The sos_setup() is called only once and it configures PIN A10 for output. sos_cycle() has to be called on every loop - it's non blocking method and it will switch the LED on and off in SOS rhythm. You can configure all possible time periods by changing corresponding variables in Sos.h. There are two more methods, that play significant role: sos_on() will enable SOS signal and respectively sos_off() will disable it. The cycle method have to be called on every cycle, even when SOS is disabled - in this case it returns immediately.
 
 # Low moisture level alarm
-When moisture gets below defined level the LED controlled by Sos.cpp will start flushing. This is being controlled by Alarm.cpp. This module knows when the alarm has to be raised and when it stops, it also controls kind of alarm - currently it's a LED signal, but you could connect something else. In this case you have to only plug it on the right place in Alarm.cpp.
+When moisture gets below defined level the LED controlled by *Sos.cpp* will start flushing. This is being controlled by *Alarm.cpp*. This module knows when the alarm has to be raised and when it stops, it also controls kind of alarm - currently it's a LED signal, but you could connect something else. In this case you have to only plug it on the right place in *Alarm.cpp*.
 Alarm starts when moisture drops below level defined by variable resistor connected to PIN 3. The resistance will be mapped to percentage and changes to this resistor are printed to COM port - when you change the resistance you can read the threshold for alarm.
 
 # Getting up and running
-Download latest release from here and compile cpp files, PlantMonitor.cpp contains main loop. I've used Eclipse, but importing this project makes no sense, because it contain hardcoded paths.
+Download latest release from here and compile cpp files, *PlantMonitor.cpp* contains main loop. I've used Eclipse, but importing this project makes no sense, because it contain hardcoded paths.
 
 Optionally you can directly upload compiled hex file:
 
+```
 sudo avrdude -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -Uflash:w:PlantMonitor.hex:a
+```
