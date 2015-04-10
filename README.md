@@ -44,6 +44,7 @@ There are a few variable resistors, that can be used to set up things like alarm
 ```
 # Moisture - Hardware
 <img src=/doc/img/moistureSensor.jpg width=300  />
+
 The sensor itself could be build from stainless steel nails, or something similar. Depending on the material and distance between probes it will have different resistance, and therefore it needs to be calibrated. 
 
 On the schematic you can see connector called "MOISTURE SENSOR" - this one will be connected to your DIY sensor - those are just two wires that we will stick into a ground. The "MOISTURE SENSOR" and resistors R10+R14 are building a voltage divider. The voltage drop on R10+R14 will be provided to Arduino's analog input A0 - and this value will be transfered into moisture in percentage. 
