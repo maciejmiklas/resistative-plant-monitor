@@ -85,10 +85,17 @@ When moisture gets below defined level the LED controlled by *Sos.cpp* will star
 Alarm starts when moisture drops below level defined by variable resistor connected to PIN 3. The resistance will be mapped to percentage and changes to this resistor are printed to COM port - when you change the resistance you can read the threshold for alarm.
 
 # Getting up and running
-Download latest release from here and compile cpp files, *PlantMonitor.cpp* contains main loop. I've used Eclipse, but importing this project makes no sense, because it contain hardcoded paths.
+Download latest release and compile cpp files, *PlantMonitor.cpp* contains main loop. I've used Eclipse, but importing this project makes no sense, it never works....
 
 Optionally you can directly upload compiled hex file:
 
 ```
 sudo avrdude -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -Uflash:w:PlantMonitor.hex:a
 ```
+
+Follow this receipt if you would like to import project into Eclipse:
+1. setup Eclipse with Arduino support
+2. create "New Arduino sketch" and name it PlantMonitor
+3. import into your project LiquidCristal lib
+4. clone git project into temp location
+5. copy all *.cpp and *.h files from temp location into folder containing your Eclipse project. Copy operation should replace  *PlantMonitor.cpp*  and *PlantMonitor.h*.
