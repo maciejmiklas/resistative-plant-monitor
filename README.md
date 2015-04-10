@@ -1,8 +1,9 @@
 The goal of this project is to build a controller that will inform you when your plant needs watering. You will see the maximal and current moisture level and the time passed since last watering. Finally when moisture level drops below defined threshold the alarm will rise - in form of LED flashing SOS signal.
-![Overview](/doc/img/overview.jpg)
+![](/doc/img/overview.jpg)
 
 # Hardware
-![Overview](/fritzing/PlantMonitor_schem.jpg)
+![](/fritzing/PlantMonitor_schem.jpg)
+<img src="/fritzing/PlantMonitor_schem.jpg" width=200  />
 
 * you will find fritzing project in folder "fritzing"
 * 2 PIN socket in the left bottom corner is meant to be connected to moisture sensor
@@ -42,7 +43,7 @@ There are a few variable resistors, that can be used to set up things like alarm
 >>[000-00:01:12,139]-> Adopting LCD backlight. Sensor: 639, LCD: 153, Adjust(def 500): 604
 ```
 # Moisture - Hardware
-![Moisture Sensor](/doc/img/moistureSensor.jpg)
+![](/doc/img/moistureSensor.jpg)
 The sensor itself could be build from stainless steel nails, or something similar. Depending on the material and distance between probes it will have different resistance, and therefore it needs to be calibrated. 
 
 On the schematic you can see connector called "MOISTURE SENSOR" - this one will be connected to your DIY sensor - those are just two wires that we will stick into a ground. The "MOISTURE SENSOR" and resistors R10+R14 are building a voltage divider. The voltage drop on R10+R14 will be provided to Arduino's analog input A0 - and this value will be transfered into moisture in percentage. 
@@ -64,11 +65,11 @@ The LCD backlight is connected to PWN output on D9, but it does not go directly 
 Actually we would not need this whole RC filter, because PWM frequency it to high to observe flickering and smoothness could be archived in software, but I just wanted to solve this in hardware and have nice constant voltage.
 
 You can see on screenshots below dependency between PWM duty (blue) and constant voltage (yellow). 
-![Rigol](/doc/img/DS1Z_QuickPrint3.jpg)
-![Rigol](/doc/img/DS1Z_QuickPrint4.jpg)
+![](/doc/img/DS1Z_QuickPrint3.jpg)
+![](/doc/img/DS1Z_QuickPrint4.jpg)
 
 The time required  to change LCD backlight from maximal brightness to minimal takes 440 ms.
-![Rigol](/doc/img/DS1Z_QuickPrint5.jpg)
+![](/doc/img/DS1Z_QuickPrint5.jpg)
 
 # LCD Display - Software (Lcd.cpp)
 The initialization phase (lcd_stup()) prints all static characters - those will not change any more,  all other characters will be printed only if they have changed - this reduces flickering. 
