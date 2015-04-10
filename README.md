@@ -3,7 +3,7 @@ The goal of this project is to build a controller that will inform you when your
 
 # Hardware
 ![](/fritzing/PlantMonitor_schem.jpg)
-<img src="/fritzing/PlantMonitor_schem.jpg" width=200  />
+<img src=/fritzing/PlantMonitor_schem.jpg width=200  />
 
 * you will find fritzing project in folder "fritzing"
 * 2 PIN socket in the left bottom corner is meant to be connected to moisture sensor
