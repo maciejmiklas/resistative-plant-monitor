@@ -102,6 +102,7 @@ sudo avrdude -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -Uflash:w:PlantMonito
 ```
 
 Follow this receipt if you would like to import project into Eclipse:
+
 1. setup Eclipse with Arduino support
 2. create "New Arduino sketch" and name it PlantMonitor
 3. import into your project LiquidCristal lib
