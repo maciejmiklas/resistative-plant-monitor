@@ -53,7 +53,7 @@ Stick your moisture sensor into watter and measure it's resistance - multiply th
 
 # Moisture - Software (*Hygrometer.cpp*)
 The method *hygro_sample(Moisture)* returns current moisture level and status: "no change", "small change" and "level increased".
-hygro_sample(Moisture) is being called on every loop, internally it executes only every 100ms, otherwise it returns "no change". With each run (every 100ms) it probes moisture level, but it does not return it immediately, it stores it in internal array and returns "no change". First after collecting 30 probes, it finds the median and returns proper status. It's worth mentioning, that moisture change is being recognized with tolerance of 5% - just to avoid bouncing.
+*hygro_sample(Moisture)* is being called on every loop, internally it executes only every 100ms, otherwise it returns "no change". With each run (every 100ms) it probes moisture level, but it does not return it immediately, it stores it in internal array and returns "no change". First after collecting 30 probes, it finds the median and returns proper status. It's worth mentioning, that moisture change is being recognized with tolerance of 5% - just to avoid bouncing.
 
 # LCD Display - Hardware
 LCD display is connected in a standard way, variable resistor R1 can be used to adjust brightness. 
