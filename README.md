@@ -25,7 +25,8 @@ The method *Util#util_millis()* is used by each module to access current time. T
 The log module will produce messages over COM port. It cannot be disabled because ... there is no reason to do so -  we do not have any other usage for COM port and sometimes it's useful to see what is happening. 
 There are a few variable resistors, that can be used to set up things like alarm threshold. Those changes will be also printed over COM port, so that you can actually see how they effect functionality. Here is a log example:
 ```
->>[000-00:00:00,000]-> Initializing LCD module >>[000-00:00:00,000]-> Initializing hygrometer module
+>>[000-00:00:00,000]-> Initializing LCD module 
+>>[000-00:00:00,000]-> Initializing hygrometer module
 >>[000-00:00:00,038]-> Adopting LCD backlight. Sensor: 519, LCD: 177, Adjust(def 500): 605 
 >>[000-00:00:00,038]-> Adjusted alarm sensitivity. 370 = 36% 
 >>[000-00:00:01,000]-> Status -> Free RAM: 1270 
@@ -41,14 +42,12 @@ There are a few variable resistors, that can be used to set up things like alarm
 >>[000-00:01:12,139]-> Adopting LCD backlight. Sensor: 639, LCD: 153, Adjust(def 500): 604
 ```
 # Moisture - Hardware
-![Moisture Sensor](/fritzing/moistureSensor.jpg) TODO
+![Moisture Sensor](/doc/img/moistureSensor.jpg)
 The sensor itself could be build from stainless steel nails, or something similar. Depending on the material and distance between probes it will have different resistance, and therefore it needs to be calibrated. 
 
 On the schematic you can see connector called "MOISTURE SENSOR" - this one will be connected to your DIY sensor - those are just two wires that we will stick into a ground. The "MOISTURE SENSOR" and resistors R10+R14 are building a voltage divider. The voltage drop on R10+R14 will be provided to Arduino's analog input A0 - and this value will be transfered into moisture in percentage. 
 
 Stick your moisture sensor into watter and measure it's resistance - multiply this value by 2 and this will be the value that you should take for R10 - in my case it was 20K. The resistor R14 is optional and you can use it for fine tuning. Assuming that R14 resistance is 0, and sensor is in watter, we will have voltage drop on this sensor, and twice voltage drop on R10 - and this is the value that we are measuring on A0. Once we start removing sensor from watter, it resistance will increase and voltage drop on R10 will respectively decrease.
-
-XXXXX
 
 # Moisture - Software (Hygrometer.cpp)
 The method hygro_sample(Moisture) returns current moisture level and status: "no change", "small change" and "level increased".
