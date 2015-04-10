@@ -53,7 +53,13 @@ Stick your moisture sensor into watter and measure it's resistance - multiply th
 
 # Moisture - Software (*Hygrometer.cpp*)
 The method *hygro_sample(Moisture)* returns current moisture level and status: "no change", "small change" and "level increased".
-*hygro_sample(Moisture)* is being called on every loop, internally it executes only every 100ms, otherwise it returns "no change". With each run (every 100ms) it probes moisture level, but it does not return it immediately, it stores it in internal array and returns "no change". First after collecting 30 probes, it finds the median and returns proper status. It's worth mentioning, that moisture change is being recognized with tolerance of 5% - just to avoid bouncing.
+The method itself is being called on every loop, internally it executes only when it's needed, otherwise it returns "no change". 
+
+Moisture measurement is being executed every 5 minutes(*MESURE_FREQ_MS*). Only during this time the moisture sensor is powered on. This is realized by transistor connected to D8. Before we start taking probes, D8 goes low and powers up sensor over transistor (PNP). But we are not taking measurements immediately after powering on - there is five second warm up period (*MOISTURE_WARM_UP_MS*). After the warm up id over, we are taking 10 probes (*PROC_PROBES*), each one every second (*MESURE_PROBE_WAIT_MS*). First after collecting all of 10 probes we calculate median and this is finally the measured value.
+
+The whole procedure takes several seconds and there are different wait periods between steps. The implementation is based on state machine pattern - method *hygro_sample(Moisture)* will get called from main loop every 100ms, it checks current state, returns immediately if further delay is required, or executes some logic, or just moves to next state. This means that we never block main loop when some delay is required - implementation relays on fact, that it will get called every 100ms and it uses this fact to calculate delay.
+
+It's worth mentioning, that moisture change is being recognized with tolerance of 5% (*MIN_TO_CHANGE*) - just to avoid bouncing.
 
 # LCD Display - Hardware
 LCD display is connected in a standard way, variable resistor R1 can be used to adjust brightness. 
