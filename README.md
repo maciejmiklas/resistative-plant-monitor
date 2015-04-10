@@ -1,5 +1,6 @@
 The goal of this project is to build a controller that will inform you when your plant needs watering. You will see the maximal and current moisture level and the time passed since last watering. Finally when moisture level drops below defined threshold the alarm will rise - in form of LED flashing SOS signal.
-<img src=/doc/img/overview.jpg width=300  />
+
+!<img src=/doc/img/overview.jpg width=300  />
 
 # Hardware
 ![](/fritzing/PlantMonitor_schem.jpg)
