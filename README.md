@@ -13,19 +13,18 @@ The goal of this project is to build a controller that will inform you when your
 * R10 + R14 - those two rezistors are part of a voltage divider for moisture sensor
 
 # Software design
-I've used Eclipse. Whole project is divided into modules, each one in separate class file.
+Whole project is divided into modules, each one in separate class file.
 
 I dis not use interrupts, so every module is controlled from main loop in PlantMonitor.cpp.
 
-Each module has to be initialized and has to execute some operations once in a while. For this propose each module defines two functions: abc_setup() and abc_cycle() - abc would be a module name. The setup method has to be called only once and this happens in PlantMonitor#setup(). The cycle method will be called on every loop. Each cycle method internally measures time and runs only when it should (like every 100ms) without blocking.
+Each module has to be initialized and has to execute some operations once in a while. For this propose each module defines two functions: *abc_setup()* and *abc_cycle()* - *abc* would be a module name. The setup method has to be called only once and this happens in *PlantMonitor#setup()*. The cycle method will be called on every loop. Each cycle method internally measures time and runs only when it should (like every 100 ms) without blocking.
 
-The method Util#util_millis() is used by each module to measure time. This method caches current time and returns this cached value - internally it obtains time at the beginning of each cycle.
-Using the same time during each cycle not only reduces amount of calls going to the timer, also each log statement within the same loop contains identical time, so we can logically connect events.
+The method *Util#util_millis()* is used by each module to access current time. The implementation of this method internally caches time during execution of single loop and updates it's value at the beginning of each cycle. Using the same time during each cycle not only reduces amount of calls going to the timer, also each log statement within the same loop contains identical time, so we can logically connect events.
 
 # Logger
 The log module will produce messages over COM port. It cannot be disabled because ... there is no reason to do so -  we do not have any other usage for COM port and sometimes it's useful to see what is happening. 
-There are a few variable resistors, that can be used to set up things like alarm threshold. Those changes will be also printed over COM port, so that you can actually see how they effct functionality. Here is a log example:
-
+There are a few variable resistors, that can be used to set up things like alarm threshold. Those changes will be also printed over COM port, so that you can actually see how they effect functionality. Here is a log example:
+```
 >>[000-00:00:00,000]-> Initializing LCD module >>[000-00:00:00,000]-> Initializing hygrometer module
 >>[000-00:00:00,038]-> Adopting LCD backlight. Sensor: 519, LCD: 177, Adjust(def 500): 605 
 >>[000-00:00:00,038]-> Adjusted alarm sensitivity. 370 = 36% 
@@ -40,7 +39,7 @@ There are a few variable resistors, that can be used to set up things like alarm
 >>[000-00:00:57,000]-> Reseting max proc based on adoption time after watering 
 >>[000-00:00:59,169]-> Adopting LCD backlight. Sensor: 679, LCD: 145, Adjust(def 500): 605 
 >>[000-00:01:12,139]-> Adopting LCD backlight. Sensor: 639, LCD: 153, Adjust(def 500): 604
-
+```
 # Moisture - Hardware
 ![Moisture Sensor](/fritzing/moistureSensor.jpg) TODO
 The sensor itself could be build from stainless steel nails, or something similar. Depending on the material and distance between probes it will have different resistance, and therefore it needs to be calibrated. 
