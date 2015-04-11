@@ -105,6 +105,6 @@ Follow this receipt if you would like to import project into Eclipse:
 
 1. setup Eclipse with Arduino support
 2. create "New Arduino sketch" and name it PlantMonitor
-3. import into your project LiquidCristal lib
+3. import into your project the LiquidCristal lib
 4. clone git project into temp location
 5. copy all *.cpp* and *.h* files from temp location into folder containing your Eclipse project. Copy operation should replace  *PlantMonitor.cpp*  and *PlantMonitor.h*.
