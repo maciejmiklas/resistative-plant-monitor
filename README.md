@@ -45,15 +45,23 @@ There are a few variable resistors, that can be used to set up things like alarm
 # Moisture - Hardware
 <img src=/doc/img/moistureSensor.jpg width=300  />
 
-The sensor itself could be build from stainless steel nails, or something similar. Depending on the material and distance between probes it will have different resistance, and therefore it needs to be calibrated. 
+The sensor itself could be build from stainless steel nails, or something similar. Depending on the material and distance between probes it will have different resistance and therefore it needs to be calibrated.
 
-On the schematic you can see connector called "MOISTURE SENSOR" - this one will be connected to your DIY sensor - those are just two wires that we will stick into a ground. The "MOISTURE SENSOR" and resistors R10+R14 are building a voltage divider. The voltage drop on R10+R14 will be provided to Arduino's analog input A0 - and this value will be transfered into moisture in percentage. 
+On the schematic you can see connector called "MOISTURE SENSOR" - this one will be connected to your DIY sensor - those are just two wires that we will basically stick into a ground. The "MOISTURE SENSOR" and resistors R10+R14 are building a voltage divider. The voltage drop on R10+R14 will be provided to Arduino's analog input A0 - and this value will be transferred into moisture in percentage.
 
-Stick your moisture sensor into watter and measure it's resistance - multiply this value by 2 and this will be the value that you should take for R10 - in my case it was 20K. The resistor R14 is optional and you can use it for fine tuning. Assuming that R14 resistance is 0, and sensor is in watter, we will have voltage drop on this sensor, and twice voltage drop on R10 - and this is the value that we are measuring on A0. Once we start removing sensor from watter, it resistance will increase and voltage drop on R10 will respectively decrease.
+First you have to determine resistance of your moisture sensor. Stick it into water and measure it's resistance - multiply this value by 2 and this will be the value that you should take for R10 - in my case it was 20K. The resistor R14 is optional and you can use it for fine tuning. Assuming that R14 resistance is 0 and sensor is in water, we will have voltage drop on our sensor and twice the voltage drop on R10 - and this is the value that we are measuring on A0. Once we start removing sensor from water, it resistance will increase and voltage drop on R10 will respectively decrease.
+
+Now it's time to calibrate the software - moisture level shout be above 90% when the sensor if fully in water. You have to adopt macro in MoistureMeter.h: *#define probeToPercent(read) (read/8)*  - header file contains further documentation.
 
 # Moisture - Software (*Hygrometer.cpp*)
-The method hygro_sample(Moisture) returns current moisture level and status: "no change", "small change" and "level increased".
-hygro_sample(Moisture) is being called on every loop, internally it executes only every 100ms, otherwise it returns "no change". With each run (every 100ms) it probes moisture level, but it does not return it immediately, it stores it in internal array and returns "no change". First after collecting 30 probes, it finds the median and returns proper status. It's worth mentioning, that moisture change is being recognized with tolerance of 5% - just to avoid bouncing.
+The method *hygro_sample(Moisture)* returns current moisture level and status: "no change", "small change" and "level increased".
+The method itself is being called on every loop, internally it executes only when it's needed, otherwise it returns "no change". 
+
+Moisture measurement is being executed every 5 minutes(*MESURE_FREQ_MS*). Only during this time the moisture sensor is powered on. This is realized by transistor connected to D8. Before we start taking probes, D8 goes low and powers up sensor over transistor (PNP). But we are not taking measurements immediately after powering on - there is five second warm up period (*MOISTURE_WARM_UP_MS*). After the warm up is over, we are taking 10 probes (*PROC_PROBES*), each one every second (*MESURE_PROBE_WAIT_MS*). First after collecting all of 10 probes we calculate median and this is finally the measured value.
+
+The whole procedure takes several seconds and there are different wait periods between particular steps. The implementation is based on state machine pattern - method *hygro_sample(Moisture)* will get called from main loop every 100ms, it checks current state, returns immediately if further delay is required, or executes some logic, or just moves to next state. This means that we never block main loop when some delay is required - implementation relays on fact, that it will get called every 100ms and so calculates required delay.
+
+It's worth mentioning, that moisture change is being recognized with tolerance of 5% (*MIN_TO_CHANGE*) - just to avoid bouncing.
 
 # LCD Display - Hardware
 LCD display is connected in a standard way, variable resistor R1 can be used to adjust brightness. 
@@ -94,8 +102,9 @@ sudo avrdude -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -Uflash:w:PlantMonito
 ```
 
 Follow this receipt if you would like to import project into Eclipse:
+
 1. setup Eclipse with Arduino support
 2. create "New Arduino sketch" and name it PlantMonitor
-3. import into your project LiquidCristal lib
+3. import into your project the LiquidCristal lib
 4. clone git project into temp location
-5. copy all *.cpp and *.h files from temp location into folder containing your Eclipse project. Copy operation should replace  *PlantMonitor.cpp*  and *PlantMonitor.h*.
+5. copy all *.cpp* and *.h* files from temp location into folder containing your Eclipse project. Copy operation should replace  *PlantMonitor.cpp*  and *PlantMonitor.h*.
