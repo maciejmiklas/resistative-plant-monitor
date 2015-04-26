@@ -5,7 +5,7 @@ static uint16_t lastLightSensorVal = 0;
 static uint32_t lastUpdate = 0;
 static LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 static boolean blinkMark = true;
-static Time dTime;
+static Time lastTime;
 
 static void clcd(uint8_t row) {
 	lcd.setCursor(0, row);
@@ -30,14 +30,14 @@ void lcd_setup() {
 
 	// row 1
 	clcd(1);
-	lcd.print("000 --~ 00:00:00");
+	lcd.print("0000 -> 00:00:00");
 
 	lastUpdate = util_millis();
 }
 
 void lcd_printMoisture(Moisture *moisture) {
 	lcd.setCursor(4, 0);
-	char pch[3];
+	char pch[4];
 	sprintf(pch, "%02d", moisture->proc);
 	lcd.print(pch);
 
@@ -51,30 +51,30 @@ void lcd_printTime(Time *time) {
 		return;
 	}
 	lastUpdate = util_millis();
-	char buf[4];
+	char buf[5];
 
 	// dd
-	if (dTime.dd != time->dd) {
+	if (lastTime.dd != time->dd) {
 		lcd.setCursor(0, 1);
-		sprintf(buf, "%03d", time->dd);
+		sprintf(buf, "%04d", time->dd);
 		lcd.print(buf);
-		dTime.dd = time->dd;
+		lastTime.dd = time->dd;
 	}
 
 	// hh
-	if (dTime.hh != time->hh) {
+	if (lastTime.hh != time->hh) {
 		lcd.setCursor(8, 1);
 		sprintf(buf, "%02d", time->hh);
 		lcd.print(buf);
-		dTime.hh = time->hh;
+		lastTime.hh = time->hh;
 	}
 
 	// mm
-	if (dTime.mm != time->mm) {
+	if (lastTime.mm != time->mm) {
 		lcd.setCursor(11, 1);
 		sprintf(buf, "%02d", time->mm);
 		lcd.print(buf);
-		dTime.mm = time->mm;
+		lastTime.mm = time->mm;
 	}
 
 	// ss
@@ -82,11 +82,11 @@ void lcd_printTime(Time *time) {
 	lcd.print(blinkMark ? ":" : " ");
 	blinkMark = !blinkMark;
 
-	if (dTime.ss != time->ss) {
+	if (lastTime.ss != time->ss) {
 		lcd.setCursor(14, 1);
 		sprintf(buf, "%02d", time->ss);
 		lcd.print(buf);
-		dTime.ss = time->ss;
+		lastTime.ss = time->ss;
 	}
 }
 

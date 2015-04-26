@@ -50,7 +50,7 @@
  *
  * Calculated percentage can be outside 0-100 range - it will be corrected later on, but not above 256
  */
-#define probeToPercent(read) (read/7)
+#define probeToPercent(read) ((uint16_t)read/8)
 
 /* Start probing after this time */
 #define MESURE_FREQ_MS 300000

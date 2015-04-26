@@ -26,9 +26,9 @@ static void state_execIdle(Moisture *moisture);
 
 void (*state)(Moisture *moisture) = &state_startWarmup;
 
-static uint8_t probeProc() {
+static uint8_t probePerc() {
 	uint16_t read = analogRead(MOISTURE_READ_PIN);
-	uint8_t proc = probeToPercent(read);
+	uint16_t proc = probeToPercent(read);
 	if (proc < 0) {
 		proc = 0;
 	} else if (proc > 100) {
@@ -45,13 +45,13 @@ static boolean checkTimer(uint32_t time) {
 	return util_millis() - timerMs > time;
 }
 
-static uint8_t readProc() {
+static uint8_t readPerc() {
 	if (probeIdx > 0 && !checkTimer(MESURE_PROBE_WAIT_MS)) {
 		return NO_VALUE;
 	}
 	startTimer();
 
-	procs[probeIdx++] = probeProc();
+	procs[probeIdx++] = probePerc();
 	if (probeIdx < PROC_PROBES) {
 		return NO_VALUE;
 	}
@@ -77,28 +77,28 @@ static void state_startMeasure(Moisture *moisture) {
 }
 
 static void state_execMeasure(Moisture *moisture) {
-	uint8_t proc = readProc();
-	if (proc == NO_VALUE) {
+	uint8_t perc = readPerc();
+	if (perc == NO_VALUE) {
 		return;
 	}
 	// power off sensor right after probing
 	digitalWrite(MOISTURE_POWER_PIN, HIGH);
 
-	if (util_abs8(proc - moisture->proc) >= MIN_TO_CHANGE) {
+	if (util_abs8(perc - moisture->proc) >= MIN_TO_CHANGE) {
 		moisture->status |= MS_CHANGED;
-		if (proc > moisture->proc + MIN_TO_CHANGE) {
+		if (perc > moisture->proc + MIN_TO_CHANGE) {
 			moisture->status |= MS_INCREASED;
-			moisture->maxProc = proc;
+			moisture->maxProc = perc;
 			moistureIncreasedMs = util_millis();
 
 		} else if ((util_millis() - moistureIncreasedMs) < MOISTURE_MAX_ADOPT_MS) {
 			ln("Reseting max proc based on adoption time after watering");
-			moisture->maxProc = proc;
+			moisture->maxProc = perc;
 
-		} else if (proc > moisture->maxProc) {
-			moisture->maxProc = proc;
+		} else if (perc > moisture->maxProc) {
+			moisture->maxProc = perc;
 		}
-		moisture->proc = proc;
+		moisture->proc = perc;
 
 		ln("Moisture has changed = %u%%, Max: %u%%, Status: %d", moisture->proc,
 				moisture->maxProc, moisture->status);
